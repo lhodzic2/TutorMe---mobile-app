@@ -1,0 +1,2 @@
+rootProject.name = "Zavrsni rad"
+include ':app'
