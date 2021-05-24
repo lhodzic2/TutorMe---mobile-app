@@ -1,7 +1,9 @@
 package com.example.zavrsnirad;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -9,9 +11,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
     private EditText firstName, lastName,email,password;
@@ -89,16 +95,28 @@ public class Register extends AppCompatActivity {
 
         firebaseAuth.createUserWithEmailAndPassword(emailText,passwordText).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-
-                Toast.makeText(Register.this, "Račun uspješno kreiran!", Toast.LENGTH_LONG).show();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(Register.this, "Verifikacioni email je poslan na Vašu email adresu!", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @org.jetbrains.annotations.NotNull Exception e) {
+                        Toast.makeText(Register.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
                 startActivity(new Intent(getApplicationContext(), Login.class));
             } else {
                 Toast.makeText(Register.this,"Error!" + task.getException().getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
+//TODO: popraviti progressbar
 
     public void handleLogin(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         startActivity(new Intent(getApplicationContext(), Login.class));
     }
 }
