@@ -20,26 +20,29 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
-    private TextView registerUser;
+    private TextView registerUser,forgotPassword;
     private EditText email,password;
     private Button btnLogin;
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
-
+    //TODO: iskljuciti dugme za vracanje na login i registraciju
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        registerUser = (TextView) findViewById(R.id.registerUser);
+        registerUser = findViewById(R.id.registerUser);
+        forgotPassword = findViewById(R.id.forgotPassword);
         registerUser.setOnClickListener(this);
+        forgotPassword.setOnClickListener(this);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
-        email = (EditText) findViewById(R.id.emailLogin);
-        password = (EditText) findViewById(R.id.passwordLogin);
+        progressBar = findViewById(R.id.progressBar2);
+        email = findViewById(R.id.emailLogin);
+        password = findViewById(R.id.passwordLogin);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -58,6 +61,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.btnLogin:
                 userLogin();
+                break;
+            case R.id.forgotPassword:
+                progressBar.setVisibility(View.VISIBLE);
+                startActivity(new Intent(this,ForgotPassword.class));
                 break;
         }
     }
@@ -97,6 +104,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user.isEmailVerified()) {
                     startActivity(new Intent(this,Dashboard.class));
+                    finish();
                 } else {
                     user.sendEmailVerification();
                     Toast.makeText(Login.this,"Molimo verificirajte svoj email",Toast.LENGTH_LONG).show();

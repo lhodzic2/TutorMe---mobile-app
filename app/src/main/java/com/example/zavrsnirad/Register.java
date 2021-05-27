@@ -1,9 +1,7 @@
 package com.example.zavrsnirad;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -78,7 +76,7 @@ public class Register extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), Login.class));
+            startActivity(new Intent(getApplicationContext(), Dashboard.class));
             finish();
         }
     }
@@ -107,16 +105,19 @@ public class Register extends AppCompatActivity {
                         Toast.makeText(Register.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-                startActivity(new Intent(getApplicationContext(), Login.class));
+                startActivity(new Intent(getApplicationContext(), Dashboard.class));
             } else {
                 Toast.makeText(Register.this,"Error!" + task.getException().getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
 //TODO: popraviti progressbar
+    //TODO: pokupiti vrijednost radio buttona
+    //TODO:pohvatati izuzetke
 
     public void handleLogin(View view) {
         progressBar.setVisibility(View.VISIBLE);
         startActivity(new Intent(getApplicationContext(), Login.class));
+        finish();
     }
 }
