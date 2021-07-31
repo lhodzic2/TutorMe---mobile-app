@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,12 +17,20 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Register extends AppCompatActivity {
     private EditText firstName, lastName,email,password;
+    private RadioButton studentRadio, instruktorRadio;
     private Button btnRegister;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
     private ProgressBar progressBar;
+    private String userID;
 
     private boolean validatePassword(String passwordText) {
         if (passwordText.isEmpty()) {
@@ -72,8 +81,11 @@ public class Register extends AppCompatActivity {
         password = findViewById(R.id.passwordRegister);
         btnRegister = findViewById(R.id.btnRegister);
         progressBar = findViewById(R.id.progressBar);
+        studentRadio = findViewById(R.id.studentRadio);
+        instruktorRadio = findViewById(R.id.instruktorRadio);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), Dashboard.class));
@@ -88,10 +100,13 @@ public class Register extends AppCompatActivity {
         String passwordText = password.getText().toString();
 
         if (! (validatePassword(passwordText) && validateEmail(emailText) && validateFirstName(firstNameText) && validateLastName(lastNameText) )) return;
-
+        if (!studentRadio.isChecked() && !instruktorRadio.isChecked()) {
+            Toast.makeText(Register.this,"Molimo označite da li ste student ili instruktor",Toast.LENGTH_LONG);
+            return;
+        }
         progressBar.setVisibility(View.VISIBLE);
 
-        firebaseAuth.createUserWithEmailAndPassword(emailText,passwordText).addOnCompleteListener(task -> {
+        firebaseAuth.createUserWithEmailAndPassword(emailText,passwordText).addOnCompleteListener(task -> { //vec provjerava da li je korisnik registrovan
             if (task.isSuccessful()) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -105,15 +120,30 @@ public class Register extends AppCompatActivity {
                         Toast.makeText(Register.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-                startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                userID = firebaseAuth.getCurrentUser().getUid();
+                DocumentReference documentReference = firebaseFirestore.collection("students").document(userID);
+                if (!studentRadio.isChecked()) {
+                    documentReference = firebaseFirestore.collection("instructors").document(userID);
+                }
+                Map<String,Object> hashMap = new HashMap<>();
+                hashMap.put("ime",firstNameText);
+                hashMap.put("prezime",lastNameText);
+                hashMap.put("email",emailText);
+                documentReference.set(hashMap);
+                if (instruktorRadio.isChecked()) {
+                    startActivity(new Intent(getApplicationContext(), PickingSubjects.class));
+                } else {
+                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                }
+                //finish();
             } else {
                 Toast.makeText(Register.this,"Error!" + task.getException().getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
 //TODO: popraviti progressbar
-    //TODO: pokupiti vrijednost radio buttona
     //TODO:pohvatati izuzetke
+    //TODO: refaktorisati kod
 
     public void handleLogin(View view) {
         progressBar.setVisibility(View.VISIBLE);
