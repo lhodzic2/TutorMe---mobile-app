@@ -46,7 +46,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null) {
+        if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
             startActivity(new Intent(getApplicationContext(), Dashboard.class));
             finish();
         }
@@ -58,8 +58,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.registerUser:
                 progressBar.setVisibility(View.VISIBLE);
                 startActivity(new Intent(this,Register.class));
+                finish();
                 break;
             case R.id.btnLogin:
+                progressBar.setVisibility(View.VISIBLE);
                 userLogin();
                 break;
             case R.id.forgotPassword:
@@ -72,9 +74,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private boolean validateEmail(String emailText) {
         if (emailText.isEmpty()) {
             email.setError("Email je obavezan!");
+            progressBar.setVisibility(View.INVISIBLE);
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
             email.setError("Unesite validan email!");
+            progressBar.setVisibility(View.INVISIBLE);
             return false;
         }
         return true;
@@ -83,9 +87,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private boolean validatePassword(String passwordText) {
         if (passwordText.isEmpty()) {
             password.setError("Password je obavezan!");
+            progressBar.setVisibility(View.INVISIBLE);
             return false;
         } else if (passwordText.length() < 8) {
             password.setError("Password mora imati najmanje 8 karaktera!");
+            progressBar.setVisibility(View.INVISIBLE);
             return false;
         }
         return true;
@@ -97,8 +103,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         if (!(validateEmail(emailText) && validatePassword(passwordText))) return;
 
-        progressBar.setVisibility(View.VISIBLE);
-
         firebaseAuth.signInWithEmailAndPassword(emailText,passwordText).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -107,9 +111,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     finish();
                 } else {
                     user.sendEmailVerification();
+                    progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(Login.this,"Molimo verificirajte svoj email",Toast.LENGTH_LONG).show();
                 }
             } else {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(Login.this,"Prijava neuspješna! Molimo provjerite vaše kredencijale.",Toast.LENGTH_LONG).show();
             }
         });

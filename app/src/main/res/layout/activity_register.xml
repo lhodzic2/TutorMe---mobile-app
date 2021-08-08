@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registracija"
+        android:text="@string/registracija"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,12 +25,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="Ime"
+        android:hint="@string/ime"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+         />
 
     <EditText
         android:id="@+id/lastName"
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="Prezime"
+        android:hint="@string/prezime"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -51,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="E-mail"
+        android:hint="@string/e_mail"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -63,27 +64,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/emailRegister"
+        app:layout_constraintVertical_bias="0.42000002" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#79E4CB"
         android:onClick="handleRegister"
-        android:text="Registruj se"
+        android:text="@string/registruj_se"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordRegister"
-        app:layout_constraintVertical_bias="0.51"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintVertical_bias="0.13999999"
         app:rippleColor="#5AE0B1" />
 
     <TextView
@@ -91,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:layout_marginTop="8dp"
-        android:text="Već imate korisnički racun?"
+        android:text="@string/postojeci_racun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,19 +109,21 @@
         android:layout_marginBottom="8dp"
         android:clickable="true"
         android:onClick="handleLogin"
-        android:text="Log in"
+        android:text="@string/log_in"
         android:textColor="#79E4CB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.04000002" />
+        app:layout_constraintVertical_bias="0.04000002"
+        android:focusable="true" />
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="139dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegister"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.37"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,13 +133,13 @@
             android:id="@+id/studentRadio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Student" />
+            android:text="@string/student" />
 
         <RadioButton
             android:id="@+id/instruktorRadio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Instruktor" />
+            android:text="@string/instruktor" />
     </RadioGroup>
 
     <ProgressBar
