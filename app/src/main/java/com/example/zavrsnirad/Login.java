@@ -25,7 +25,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private Button btnLogin;
     private ProgressBar progressBar;
     private FirebaseAuth firebaseAuth;
-    //TODO: iskljuciti dugme za vracanje na login i registraciju
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +46,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
+            startActivity(new Intent(getApplicationContext(), Dashboard.class));
+            finish();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
             startActivity(new Intent(getApplicationContext(), Dashboard.class));
             finish();

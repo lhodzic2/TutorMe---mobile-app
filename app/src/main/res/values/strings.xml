@@ -10,7 +10,7 @@
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hello_search_fragment" >Hello Search</string>
+    <string name="hello_search_fragment">Hello Search</string>
     <string name="hello_user_fragment" />
     <string name="ime">Ime</string>
     <string name="prezime">Prezime</string>
@@ -22,4 +22,7 @@
     <string name="log_in">Log in</string>
     <string name="student">Student</string>
     <string name="instruktor">Instruktor</string>
+    <string name="action_favorite">action_fav</string>
+    <string name="action_settings">settings</string>
+    <string name="log_out">Log out</string>
 </resources>

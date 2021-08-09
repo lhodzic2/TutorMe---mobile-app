@@ -2,25 +2,31 @@ package com.example.zavrsnirad.model;
 
 import android.util.Patterns;
 
+import java.util.ArrayList;
+
 public class User {
-    private String firstName,lastName,email,password;
+    private String fullName,email,password;
+    private ArrayList<String> predmeti;
 
     public User() { }
 
-    public String getFirstName() {
-        return firstName;
+    public User(String fullName, String email, String password, ArrayList<String> predmeti) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.predmeti = predmeti;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public User(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -39,11 +45,12 @@ public class User {
         this.password = password;
     }
 
-    public User(String firstName, String lastName, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+    public ArrayList<String> getPredmeti() {
+        return predmeti;
+    }
+
+    public void setPredmeti(ArrayList<String> predmeti) {
+        this.predmeti = predmeti;
     }
 
     public String validatePassword(String passwordText) {
