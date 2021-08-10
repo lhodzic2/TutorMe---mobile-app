@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.zavrsnirad.Adapter.UserAdapter;
 import com.example.zavrsnirad.R;
@@ -39,6 +40,7 @@ public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
     private List<User> users;
+    private SearchView searchView;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -58,9 +60,22 @@ public class SearchFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewUsers);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchView = view.findViewById(R.id.searchView);
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                userAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         users = new ArrayList<>();
-        loadUsers1();
+        loadUsers();
         return view;
     }
 
@@ -83,7 +98,7 @@ public class SearchFragment extends Fragment {
 
     }
 
-    private void loadUsers1() {
+   /*private void loadUsers1() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.collection("instructors").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -105,5 +120,5 @@ public class SearchFragment extends Fragment {
         });
 
 
-    }
+    }*/
 }

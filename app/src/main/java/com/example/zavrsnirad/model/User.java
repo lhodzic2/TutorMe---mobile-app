@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class User {
     private String fullName,email,password;
+    private String image;
+    private String id;
     private ArrayList<String> predmeti;
 
     public User() { }
@@ -15,6 +17,11 @@ public class User {
         this.email = email;
         this.password = password;
         this.predmeti = predmeti;
+    }
+
+    public User(String fullName, String id) {
+        this.fullName = fullName;
+        this.id = id;
     }
 
     public User(String fullName) {
@@ -51,6 +58,22 @@ public class User {
 
     public void setPredmeti(ArrayList<String> predmeti) {
         this.predmeti = predmeti;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String validatePassword(String passwordText) {
