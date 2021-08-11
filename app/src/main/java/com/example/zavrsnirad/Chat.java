@@ -85,7 +85,7 @@ public class Chat extends AppCompatActivity {
         document.addSnapshotListener((value, error) -> {
             String user = value.getString("fullName");
             userName.setText(user);
-            readMessage(senderID,recieverID);
+            readMessage(senderID.trim(), recieverID.trim());
         });
 
 
@@ -94,29 +94,42 @@ public class Chat extends AppCompatActivity {
 
         btnSend.setOnClickListener(v -> {
             String message = textInput.getText().toString();
-            if(!message.equals("")) {
-                sendMessage(senderID,recieverID,message);
+            if (!message.equals("")) {
+                sendMessage(senderID, recieverID, message);
             }
             textInput.setText("");
 
         });
-        //readMessage(senderID,recieverID);
     }
 
-   private void sendMessage(String senderID, String recieverID, String message) {
-        //DocumentReference documentReference = firebaseFirestore.collection("instructors").document(recieverID).collection("messages");
+    private void sendMessage(String senderID, String recieverID, String message) {
         DatabaseReference db = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("senderID",senderID);
-        hashMap.put("receiverID",recieverID);
-        hashMap.put("message",message);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("senderID", senderID);
+        hashMap.put("receiverID", recieverID.trim());
+        hashMap.put("message", message);
         db.child("messages").push().setValue(hashMap);
         //TODO: dodati error kad poruka nije poslana
-    }
-    /*private void setSupportActionBar(Toolbar toolbar) {
-    }*/
+        //TODO: provjeriti da li je listener najbolja opcija
+        DatabaseReference dbChat = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference("MessageList")
+                .child(senderID).child(recieverID);
+        dbChat.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    dbChat.child("id").setValue(recieverID);
+                }
+            }
 
-    private void readMessage(String senderID,String receiverID) {
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void readMessage(String senderID, String receiverID) {
         messages = new ArrayList<>();
         db = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference("messages");
         db.addValueEventListener(new ValueEventListener() {
@@ -127,10 +140,10 @@ public class Chat extends AppCompatActivity {
 
                     Message message = ds.getValue(Message.class);
 
-                    if ( (message.getSenderID().equals(senderID) && message.getReceiverID().equals(receiverID)) || ( message.getReceiverID().equals(senderID) && message.getSenderID().equals(receiverID))) {
+                    if (message.getSenderID().equals(senderID) && message.getReceiverID().equals(receiverID) || message.getReceiverID().equals(senderID) && message.getSenderID().equals(receiverID)) {
                         messages.add(message);
                     }
-                    adapter = new MessageAdapter(getApplicationContext(),messages);
+                    adapter = new MessageAdapter(Chat.this, messages);
                     recyclerView.setAdapter(adapter);
                 }
             }
