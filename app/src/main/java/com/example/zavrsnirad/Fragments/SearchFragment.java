@@ -57,25 +57,15 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search,container);
 
+
         recyclerView = view.findViewById(R.id.recyclerViewUsers);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         searchView = view.findViewById(R.id.searchView);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                userAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
         users = new ArrayList<>();
         loadUsers();
+
         return view;
     }
 
@@ -91,6 +81,18 @@ public class SearchFragment extends Fragment {
                     }
                 }
                 userAdapter = new UserAdapter(getContext(),users);
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        userAdapter.getFilter().filter(newText);
+                        return false;
+                    }
+                });
                 recyclerView.setAdapter(userAdapter);
                 userAdapter.notifyDataSetChanged();
             }

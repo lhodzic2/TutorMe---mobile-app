@@ -1,5 +1,6 @@
 package com.example.zavrsnirad;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,13 +22,20 @@ import com.example.zavrsnirad.model.Message;
 import com.example.zavrsnirad.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +44,7 @@ import java.util.List;
 public class Chat extends AppCompatActivity {
 
     private FirebaseUser firebaseUser;
+    private DatabaseReference db;
     private FirebaseFirestore firebaseFirestore;
     private Intent intent;
     private EditText textInput;
@@ -51,6 +60,7 @@ public class Chat extends AppCompatActivity {
 
         TextView userName = findViewById(R.id.userFullName);
         ImageView imageView = findViewById(R.id.profileIconChat);
+
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerMessages);
         recyclerView.setHasFixedSize(true);
@@ -67,9 +77,17 @@ public class Chat extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-
         String senderID = firebaseUser.getUid();
         String recieverID = intent.getStringExtra("id");
+
+        //dobavljanje imena primatelja
+        DocumentReference document = firebaseFirestore.collection("instructors").document(recieverID);
+        document.addSnapshotListener((value, error) -> {
+            String user = value.getString("fullName");
+            userName.setText(user);
+            readMessage(senderID,recieverID);
+        });
+
 
         textInput = findViewById(R.id.textInput);
         btnSend = findViewById(R.id.btnSend);
@@ -87,34 +105,43 @@ public class Chat extends AppCompatActivity {
 
    private void sendMessage(String senderID, String recieverID, String message) {
         //DocumentReference documentReference = firebaseFirestore.collection("instructors").document(recieverID).collection("messages");
-
+        DatabaseReference db = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
         HashMap<String,Object> hashMap = new HashMap<>();
         hashMap.put("senderID",senderID);
-        hashMap.put("recieverID",recieverID);
+        hashMap.put("receiverID",recieverID);
         hashMap.put("message",message);
-        firebaseFirestore.collection("messages").add(hashMap);
+        db.child("messages").push().setValue(hashMap);
         //TODO: dodati error kad poruka nije poslana
-
-
     }
     /*private void setSupportActionBar(Toolbar toolbar) {
     }*/
 
     private void readMessage(String senderID,String receiverID) {
         messages = new ArrayList<>();
-        /*firebaseFirestore.collection("messages").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference("messages");
+        db.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
-                for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    if (documentChange.getType() == DocumentChange.Type.ADDED && documentChange.getDocument().get("senderID").equals(senderID) && documentChange.getDocument().get("receiverID".equals(receiverID))) {
-                        messages.add(documentChange.getDocument().toObject(Message.class));
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                messages.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+
+                    Message message = ds.getValue(Message.class);
+
+                    if ( (message.getSenderID().equals(senderID) && message.getReceiverID().equals(receiverID)) || ( message.getReceiverID().equals(senderID) && message.getSenderID().equals(receiverID))) {
+                        messages.add(message);
                     }
+                    adapter = new MessageAdapter(getApplicationContext(),messages);
+                    recyclerView.setAdapter(adapter);
                 }
-                adapter = new MessageAdapter(getApplicationContext(),messages);
-                recyclerView.setAdapter(adapter);
             }
-        });*/
-        //firebaseFirestore.collection("messages").whereEqualTo("sende")
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 
 
