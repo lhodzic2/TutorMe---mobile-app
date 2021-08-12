@@ -65,7 +65,7 @@ public class PickingSubjects extends AppCompatActivity {
         }
         userID = firebaseAuth.getCurrentUser().getUid();
 
-        documentReference = firebaseFirestore.collection("instructors").document(userID);
+        documentReference = firebaseFirestore.collection("users").document(userID);
         Map<String,Object> hashMap = new HashMap<>();
         hashMap.put("predmeti",selectedItems);
         documentReference.update(hashMap);

@@ -121,13 +121,18 @@ public class Register extends AppCompatActivity {
                                 }).create();
 
                         userID = firebaseAuth.getCurrentUser().getUid();
-                        DocumentReference documentReference = firebaseFirestore.collection("students").document(userID);
-                        if (!studentRadio.isChecked()) {
-                            documentReference = firebaseFirestore.collection("instructors").document(userID);
-                        }
                         Map<String,Object> hashMap = new HashMap<>();
+                        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+                        if (!studentRadio.isChecked()) {
+                            hashMap.put("type","student");
+                        } else {
+                            hashMap.put("type","instructor");
+                        }
+
                         hashMap.put("fullName",firstNameText + " " + lastNameText);
                         hashMap.put("email",emailText);
+                        hashMap.put("id",userID);
+
                         documentReference.set(hashMap);
 
                         if (!instruktorRadio.isChecked())  {

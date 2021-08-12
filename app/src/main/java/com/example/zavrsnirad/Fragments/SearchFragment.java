@@ -71,11 +71,11 @@ public class SearchFragment extends Fragment {
     private void loadUsers() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("instructors").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firebaseFirestore.collection("users").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
                 for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID)) {
+                    if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID) && !documentChange.getDocument().get("type").equals("instructor")) {
                         users.add(documentChange.getDocument().toObject(User.class));
                     }
                 }
