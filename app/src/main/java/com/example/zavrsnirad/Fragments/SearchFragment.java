@@ -31,11 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
-
- * create an instance of this fragment.
- */
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
@@ -54,7 +49,7 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search,container);
+        View view = inflater.inflate(R.layout.fragment_search,container,false);
 
 
         recyclerView = view.findViewById(R.id.recyclerViewUsers);
@@ -75,7 +70,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
                 for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID) ) {
+                    if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID) && documentChange.getDocument().get("type").equals("instructor")) {
                         users.add(documentChange.getDocument().toObject(User.class));
                     }
                 }

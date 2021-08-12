@@ -90,7 +90,7 @@ public class InboxFragment extends Fragment {
         users = new ArrayList<>();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         //TODO:add value event
-        firebaseFirestore.collection("users").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firebaseFirestore.collection("users").addSnapshotListener(new EventListener<QuerySnapshot>() { //TODO:popraviti ovaj event listener
             @Override
             public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
                 users.clear();

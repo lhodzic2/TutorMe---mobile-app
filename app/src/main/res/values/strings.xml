@@ -27,4 +27,5 @@
     <string name="log_out">Log out</string>
     <string name="textview">TextView</string>
     <string name="unesite_poruku">Unesite poruku</string>
+    <string name="pretraga_po_imenu_ili_predmetu">Tražite po imenu ili predmetu</string>
 </resources>

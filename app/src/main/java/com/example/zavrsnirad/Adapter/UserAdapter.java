@@ -49,7 +49,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
     public void onBindViewHolder(@NonNull @NotNull UserAdapter.ViewHolder holder, int position) {
         User user = users.get(position);
         holder.username.setText(user.getFullName());
-        //holder.subjectList.setText(user.getPredmeti());
+        if (user.getPredmeti() != null) {
+            String subjects = user.getPredmeti().get(0);
+            for (int i = 1; i < user.getPredmeti().size(); i++) {
+                if (i != user.getPredmeti().size() - 1) {
+                    subjects = subjects + ", " + user.getPredmeti().get(i);
+                }
+            }
+            holder.subjectList.setText(subjects);
+        }
+
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, Chat.class);
             intent.putExtra("id",user.getId());
