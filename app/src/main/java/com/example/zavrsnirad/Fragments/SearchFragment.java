@@ -75,7 +75,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
                 for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID) && !documentChange.getDocument().get("type").equals("instructor")) {
+                    if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID) ) {
                         users.add(documentChange.getDocument().toObject(User.class));
                     }
                 }

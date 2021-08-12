@@ -124,9 +124,9 @@ public class Register extends AppCompatActivity {
                         Map<String,Object> hashMap = new HashMap<>();
                         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
                         if (!studentRadio.isChecked()) {
-                            hashMap.put("type","student");
-                        } else {
                             hashMap.put("type","instructor");
+                        } else {
+                            hashMap.put("type","student");
                         }
 
                         hashMap.put("fullName",firstNameText + " " + lastNameText);
