@@ -69,9 +69,9 @@ public class Chat extends AppCompatActivity {
         layoutManager.setStackFromEnd(true); //TODO:provjeriti
         recyclerView.setLayoutManager(layoutManager);
 
-        toolbar.setNavigationOnClickListener(v -> {
+        /*toolbar.setNavigationOnClickListener(v -> {
             finish();
-        });
+        });*/
 
         intent = getIntent();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -81,7 +81,7 @@ public class Chat extends AppCompatActivity {
         String recieverID = intent.getStringExtra("id");
 
         //dobavljanje imena primatelja
-        DocumentReference document = firebaseFirestore.collection("instructors").document(recieverID);
+        DocumentReference document = firebaseFirestore.collection("users").document(recieverID);
         document.addSnapshotListener((value, error) -> {
             String user = value.getString("fullName");
             userName.setText(user);

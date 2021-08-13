@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class UserProfileFragment extends Fragment {
 
     private TextView userName;
     private ImageView image;
+    private Button btnDelete;
 
     private FirebaseFirestore firebaseFirestore;
 
@@ -44,6 +46,12 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         userName = view.findViewById(R.id.profileName);
         image = view.findViewById(R.id.profilePicture);
+        btnDelete = view.findViewById(R.id.btnDelete);
+
+        btnDelete.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().getCurrentUser().delete();
+
+        });
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         DocumentReference reference = firebaseFirestore.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
