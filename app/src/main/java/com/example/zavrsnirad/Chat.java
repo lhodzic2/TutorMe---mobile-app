@@ -126,6 +126,21 @@ public class Chat extends AppCompatActivity {
 
             }
         });
+        DatabaseReference dbChat1 = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference("MessageList")
+                .child(recieverID).child(senderID);
+        dbChat1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    dbChat1.child("id").setValue(senderID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
 
     }
 
