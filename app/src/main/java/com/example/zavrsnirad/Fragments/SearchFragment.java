@@ -66,30 +66,27 @@ public class SearchFragment extends Fragment {
     private void loadUsers() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("users").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
-                for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID) && documentChange.getDocument().get("type").equals("instructor")) {
-                        users.add(documentChange.getDocument().toObject(User.class));
-                    }
+        firebaseFirestore.collection("users").addSnapshotListener((value, error) -> {
+            for (DocumentChange documentChange : value.getDocumentChanges()) {
+                if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID) && documentChange.getDocument().get("type").equals("instructor")) {
+                    users.add(documentChange.getDocument().toObject(User.class));
                 }
-                userAdapter = new UserAdapter(getContext(),users);
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        userAdapter.getFilter().filter(newText);
-                        return false;
-                    }
-                });
-                recyclerView.setAdapter(userAdapter);
-                userAdapter.notifyDataSetChanged();
             }
+            userAdapter = new UserAdapter(getContext(),users);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    userAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+            recyclerView.setAdapter(userAdapter);
+            userAdapter.notifyDataSetChanged();
         });
 
     }

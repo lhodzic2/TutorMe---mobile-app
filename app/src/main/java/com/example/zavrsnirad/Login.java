@@ -126,7 +126,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 }
             } else {
                 progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(Login.this,"Prijava neuspješna! Molimo provjerite vaše kredencijale.",Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this,"Prijava neuspješna! Molimo provjerite vaše kredencijale." ,Toast.LENGTH_LONG).show();
             }
         });
     }

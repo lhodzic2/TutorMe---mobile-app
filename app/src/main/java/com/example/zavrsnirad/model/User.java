@@ -6,11 +6,40 @@ import java.util.ArrayList;
 
 public class User {
     private String fullName,email,password;
-    private String image;
+    private String imageURI,type;
     private String id;
     private ArrayList<String> predmeti;
 
     public User() { }
+
+
+
+    public User(String fullName, String email, String password, String imageURI, String type, String id, ArrayList<String> predmeti) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.imageURI = imageURI;
+        this.type = type;
+        this.id = id;
+        this.predmeti = predmeti;
+    }
+
+    public User(String fullName, String email, String imageURI, String id, ArrayList<String> predmeti) {
+        this.fullName = fullName;
+        this.email = email;
+        this.imageURI = imageURI;
+        this.id = id;
+        this.predmeti = predmeti;
+    }
+
+    public User(String fullName, String email, String password, String imageURI, String id, ArrayList<String> predmeti) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.imageURI = imageURI;
+        this.id = id;
+        this.predmeti = predmeti;
+    }
 
     public User(String fullName, String email, String password, ArrayList<String> predmeti) {
         this.fullName = fullName;
@@ -22,6 +51,14 @@ public class User {
     public User(String fullName, String id) {
         this.fullName = fullName;
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public User(String fullName) {
@@ -60,12 +97,12 @@ public class User {
         this.predmeti = predmeti;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageURI() {
+        return imageURI;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageURI(String imageURI) {
+        this.imageURI = imageURI;
     }
 
     public String getId() {

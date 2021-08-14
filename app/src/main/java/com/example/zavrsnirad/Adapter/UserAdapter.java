@@ -2,6 +2,7 @@ package com.example.zavrsnirad.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.example.zavrsnirad.Chat;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.User;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,7 +72,33 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
             context.startActivity(intent);
         });
 
+        if (user.getImageURI().equals("default")) {
+            holder.imageView.setImageResource(R.mipmap.ikona3);
+        } else {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(user.getId());
+
+            Glide.with(context)
+                    .load(storageReference)
+                    .into(holder.imageView);
+
+
+        }
+
     }
+
+    @GlideModule
+    public class MyAppGlideModule extends AppGlideModule {
+
+        @Override
+        public void registerComponents(Context context, Glide glide, Registry registry) {
+            // Register FirebaseImageLoader to handle StorageReference
+            registry.append(StorageReference.class, InputStream.class,
+                    new FirebaseImageLoader.Factory());
+        }
+    }
+
+
+
 
     @Override
     public int getItemCount() {

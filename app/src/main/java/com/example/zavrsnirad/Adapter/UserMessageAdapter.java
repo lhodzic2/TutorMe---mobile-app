@@ -53,6 +53,12 @@ public class UserMessageAdapter extends RecyclerView.Adapter<UserMessageAdapter.
             context.startActivity(intent);
         });
 
+        /*if (user.getImageURI().equals("default")) {
+            holder.imageView.setImageResource(R.mipmap.ikona3);
+        } else {
+
+        }*/
+
     }
 
     @Override

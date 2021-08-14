@@ -132,6 +132,7 @@ public class Register extends AppCompatActivity {
                         hashMap.put("fullName",firstNameText + " " + lastNameText);
                         hashMap.put("email",emailText);
                         hashMap.put("id",userID);
+                        hashMap.put("imageURI","default");
 
                         documentReference.set(hashMap);
 
