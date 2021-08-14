@@ -49,15 +49,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
     public void onBindViewHolder(@NonNull @NotNull UserAdapter.ViewHolder holder, int position) {
         User user = users.get(position);
         holder.username.setText(user.getFullName());
-        if (user.getPredmeti() != null) {
-            String subjects = user.getPredmeti().get(0);
-            for (int i = 1; i < user.getPredmeti().size(); i++) {
-                if (i != user.getPredmeti().size() - 1) {
-                    subjects = subjects + ", " + user.getPredmeti().get(i);
-                }
-            }
-            holder.subjectList.setText(subjects);
-        }
+
+        String subjects = arrayToString(user.getPredmeti());
+        holder.subjectList.setText(subjects);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, Chat.class);
@@ -86,7 +80,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
             } else {
                 String filter = constraint.toString().toLowerCase().trim();
                 for (User u : usersOriginal) {
-                    if (u.getFullName().toLowerCase().contains(filter)) {
+                    if (u.getFullName().toLowerCase().contains(filter) || arrayToString(u.getPredmeti()).toLowerCase().contains(filter)) {
                         filteredUsers.add(u);
                     }
                 }
@@ -115,5 +109,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
             imageView = itemView.findViewById(R.id.imageView);
             subjectList = itemView.findViewById(R.id.subjectList);
         }
+    }
+
+    private String arrayToString (ArrayList<String> subjects) {
+            String arrayString = subjects.get(0);
+            for (int i = 1; i < subjects.size(); i++) {
+                if (i != subjects.size() - 1) {
+                    arrayString = arrayString + ", " + subjects.get(i);
+                }
+            }
+        return arrayString;
     }
 }

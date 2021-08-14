@@ -11,9 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
-import com.example.zavrsnirad.Adapter.UserAdapter;
+import com.example.zavrsnirad.Adapter.UserMessageAdapter;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.MessageList;
 import com.example.zavrsnirad.model.User;
@@ -37,7 +36,7 @@ import java.util.List;
 
 public class InboxFragment extends Fragment {
 
-    private UserAdapter userAdapter;
+    private UserMessageAdapter adapter;
     private List<User> users;
     private FirebaseUser firebaseUser;
     private DatabaseReference db;
@@ -105,9 +104,9 @@ public class InboxFragment extends Fragment {
                     }
                 }
 
-                userAdapter = new UserAdapter(getContext(),users);
-                recycler.setAdapter(userAdapter);
-                userAdapter.notifyDataSetChanged();
+                adapter = new UserMessageAdapter(getContext(),users);
+                recycler.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
         });
     }
