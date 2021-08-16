@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.zavrsnirad.ForgotPassword;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.User;
 import com.google.android.gms.tasks.Continuation;
@@ -53,7 +54,7 @@ import java.util.UUID;
 
 public class UserProfileFragment extends Fragment {
 
-    private TextView userName;
+    private TextView userName,accountType,changePassword;
     private ImageView image;
     private Button btnDelete,btnSave;
     private Uri imageUri;
@@ -61,8 +62,7 @@ public class UserProfileFragment extends Fragment {
 
     private FirebaseFirestore firebaseFirestore;
     private StorageReference storageReference;
-    private static final int IMAGE_REQUEST = 1;
-    private StorageTask uploadTask;
+
 
 
     public UserProfileFragment() {
@@ -81,6 +81,8 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         userName = view.findViewById(R.id.profileName);
         image = view.findViewById(R.id.profilePicture);
+        changePassword = view.findViewById(R.id.changePassword);
+        accountType = view.findViewById(R.id.email);
 
         //storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -88,6 +90,11 @@ public class UserProfileFragment extends Fragment {
         btnSave = view.findViewById(R.id.btnSave);
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        changePassword.setOnClickListener(v -> {
+
+            startActivity(new Intent(getContext(), ForgotPassword.class));
+        });
 
         btnDelete.setOnClickListener(v -> {
             FirebaseAuth.getInstance().getCurrentUser().delete();
@@ -99,15 +106,10 @@ public class UserProfileFragment extends Fragment {
         });
         
         btnSave.setOnClickListener(v -> {
-            if (image != null) uploadImage();
+            if (imageUri != null) uploadImage();
         });
 
         storageReference = FirebaseStorage.getInstance().getReference().child(userID);
-        try {
-            File localFile = File.createTempFile("tempfile",".jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -117,6 +119,7 @@ public class UserProfileFragment extends Fragment {
             if (getContext() == null) return;
             User user = value.toObject(User.class);
             userName.setText(user.getFullName());
+            accountType.setText(user.getEmail());
             if (user.getImageURI().equals("default")) {
                 image.setImageResource(R.mipmap.ikona3);
             } else {
@@ -128,41 +131,7 @@ public class UserProfileFragment extends Fragment {
         return view;
     }
 
-    /*private void uploadImage() {
-        storageReference = FirebaseStorage.getInstance().getReference().child(userID + "." + getFileExtension(imageUri));
-        storageReference.putFile(imageUri).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                uploadTask = storageReference.getFile(imageUri);
-                uploadTask.continueWith((Continuation<UploadTask.TaskSnapshot, Task<Uri>>) task1 -> {
-                    if (!task1.isSuccessful()) {
-                        throw task1.getException();
-                    }
-                    return storageReference.getDownloadUrl();
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            Uri downloadUri = task.getResult();
-                            String mUri = downloadUri.toString();
 
-                            DocumentReference document = FirebaseFirestore.getInstance().collection("users").document(userID);
-                            document.update("imageURI",mUri);
-                            Toast.makeText(getContext(),"Slika profila uspješno promijenjena",Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getContext(),"FAIL",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                DocumentReference document = FirebaseFirestore.getInstance().collection("users").document(userID);
-                document.update("imageURI",imageUri.toString());
-                Toast.makeText(getContext(),"Slika profila uspješno promijenjena",Toast.LENGTH_LONG).show();
-
-            } else {
-                Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
-            }
-
-        });
-    }*/
     private void uploadImage() {
         StorageReference ref = FirebaseStorage.getInstance().getReference().child(userID + "." + getFileExtension(imageUri));
         ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

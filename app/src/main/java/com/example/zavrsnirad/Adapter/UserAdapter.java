@@ -20,6 +20,7 @@ import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 import com.example.zavrsnirad.Chat;
+import com.example.zavrsnirad.ProfilePreview;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.User;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -67,7 +68,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         holder.subjectList.setText(subjects);
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, Chat.class);
+           /// Intent intent = new Intent(context, Chat.class);
+            Intent intent = new Intent(context, ProfilePreview.class);
             intent.putExtra("id",user.getId());
             context.startActivity(intent);
         });
@@ -75,13 +77,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         if (user.getImageURI().equals("default")) {
             holder.imageView.setImageResource(R.mipmap.ikona3);
         } else {
-
-
             Glide.with(context)
                     .load(user.getImageURI())
                     .into(holder.imageView);
-
-
         }
 
     }
