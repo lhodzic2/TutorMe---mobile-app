@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.zavrsnirad.Chat;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.User;
@@ -53,11 +54,13 @@ public class UserMessageAdapter extends RecyclerView.Adapter<UserMessageAdapter.
             context.startActivity(intent);
         });
 
-        /*if (user.getImageURI().equals("default")) {
+        if (user.getImageURI().equals("default")) {
             holder.imageView.setImageResource(R.mipmap.ikona3);
         } else {
-
-        }*/
+            Glide.with(context)
+                    .load(user.getImageURI())
+                    .into(holder.imageView);
+        }
 
     }
 

@@ -75,7 +75,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         if (user.getImageURI().equals("default")) {
             holder.imageView.setImageResource(R.mipmap.ikona3);
         } else {
-           // StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(user.getId());
+
 
             Glide.with(context)
                     .load(user.getImageURI())

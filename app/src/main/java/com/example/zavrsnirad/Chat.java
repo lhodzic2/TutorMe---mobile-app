@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.example.zavrsnirad.Adapter.MessageAdapter;
 import com.example.zavrsnirad.model.Message;
 import com.example.zavrsnirad.model.User;
@@ -83,9 +84,17 @@ public class Chat extends AppCompatActivity {
         //dobavljanje imena primatelja
         DocumentReference document = firebaseFirestore.collection("users").document(recieverID);
         document.addSnapshotListener((value, error) -> {
-            String user = value.getString("fullName");
-            userName.setText(user);
+            User user = value.toObject(User.class);
+            userName.setText(user.getFullName());
             readMessage(senderID.trim(), recieverID.trim());
+            if (user.getImageURI().equals("default")) {
+                imageView.setImageResource(R.mipmap.ikona3);
+            } else {
+                Glide.with(getApplicationContext())
+                        .load(user.getImageURI())
+                        .into(imageView);
+            }
+
         });
 
 
