@@ -52,13 +52,13 @@ public class UserProfileFragment extends Fragment {
     private ImageView image;
     private Button btnDelete,btnSave;
     private Uri imageUri;
-    private Uri uri;
-    String mUri;
-    private StorageTask uploadTask;
+    private String userID;
 
     private FirebaseFirestore firebaseFirestore;
-    private FirebaseStorage storage;
     private StorageReference storageReference;
+    private static final int IMAGE_REQUEST = 1;
+    private StorageTask uploadTask;
+
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -77,10 +77,12 @@ public class UserProfileFragment extends Fragment {
         userName = view.findViewById(R.id.profileName);
         image = view.findViewById(R.id.profilePicture);
 
-        storage = FirebaseStorage.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference("uploads");
+        //storageReference = FirebaseStorage.getInstance().getReference();
+
         btnDelete = view.findViewById(R.id.btnDelete);
         btnSave = view.findViewById(R.id.btnSave);
+
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         btnDelete.setOnClickListener(v -> {
             FirebaseAuth.getInstance().getCurrentUser().delete();
@@ -88,9 +90,7 @@ public class UserProfileFragment extends Fragment {
         });
 
         image.setOnClickListener(v -> {
-            //Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);//TODO:provjeriti
             mGetContent.launch("image/*");
-
         });
         
         btnSave.setOnClickListener(v -> {
@@ -100,9 +100,9 @@ public class UserProfileFragment extends Fragment {
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference reference = firebaseFirestore.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+         DocumentReference reference = firebaseFirestore.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        reference.addSnapshotListener((value, error) -> {
+        /*reference.addSnapshotListener((value, error) -> {
             User user = value.toObject(User.class);
             userName.setText(user.getFullName());
             if (user.getImageURI().equals("default")) {
@@ -110,55 +110,25 @@ public class UserProfileFragment extends Fragment {
             } else {
                 Glide.with(getContext()).load(user.getImageURI()).into(image);
             }
-        });
-
+        });*/
 
 
         return view;
     }
 
     private void uploadImage() {
-        if (imageUri != null) {
-            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            StorageReference reference = storage.getReference().child(userID);
-            uploadTask = reference.getFile(imageUri);
-            uploadTask.continueWith(new Continuation<UploadTask.TaskSnapshot,Task<Uri>>() {
-                @Override
-                public Task<Uri> then(@NonNull @NotNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                    if (!task.isSuccessful()) {
-                        throw task.getException();
-                    }
-                    return reference.getDownloadUrl();
+        storageReference = FirebaseStorage.getInstance().getReference().child(userID);
+        storageReference.putFile(imageUri).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentReference document = FirebaseFirestore.getInstance().collection("users").document(userID);
+                document.update("imageURI","userProfilePhoto");
+                Toast.makeText(getContext(),"Slika profila uspješno promijenjena",Toast.LENGTH_LONG).show();
 
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull @NotNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
-                        Uri downloadUri = task.getResult();
-                        mUri = downloadUri.toString();
+            } else {
+                Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
+            }
 
-                        DocumentReference document = firebaseFirestore.collection("users").document(userID);
-                        Map<String,Object> hashMap = new HashMap<>();
-                        hashMap.put("imageURI",mUri);
-                        document.update(hashMap);
-                        Toast.makeText(getContext(),"Slika profila uspješno promijenjena!",Toast.LENGTH_LONG).show();
-                    }
-
-                }
-            });
-
-            /*reference.putFile(imageUri).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-                    DocumentReference document = firestore.collection("users").document(userID + "." + getFileExtension(imageUri));
-                    Map<String,Object> hashMap = new HashMap<>();
-                    hashMap.put("imageURI","userProfilePhoto");
-                    document.update(hashMap);
-                    Toast.makeText(getContext(),"Slika profila uspješno promijenjena!",Toast.LENGTH_LONG).show();
-                }
-            });*/
-        }
+        });
     }
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
@@ -172,11 +142,7 @@ public class UserProfileFragment extends Fragment {
                 }
             });
 
-    private String getFileExtension(Uri uri) {
-        ContentResolver contentResolver = getContext().getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
+
 
 
 }
