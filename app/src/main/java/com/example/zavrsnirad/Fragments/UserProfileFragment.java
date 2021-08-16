@@ -27,6 +27,8 @@ import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -36,12 +38,15 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -94,15 +99,22 @@ public class UserProfileFragment extends Fragment {
         });
         
         btnSave.setOnClickListener(v -> {
-            uploadImage();
+            if (image != null) uploadImage();
         });
 
+        storageReference = FirebaseStorage.getInstance().getReference().child(userID);
+        try {
+            File localFile = File.createTempFile("tempfile",".jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-         DocumentReference reference = firebaseFirestore.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DocumentReference reference = firebaseFirestore.collection("users").document(userID);
 
-        /*reference.addSnapshotListener((value, error) -> {
+        reference.addSnapshotListener((value, error) -> {
+            if (getContext() == null) return;
             User user = value.toObject(User.class);
             userName.setText(user.getFullName());
             if (user.getImageURI().equals("default")) {
@@ -110,24 +122,72 @@ public class UserProfileFragment extends Fragment {
             } else {
                 Glide.with(getContext()).load(user.getImageURI()).into(image);
             }
-        });*/
+        });
 
 
         return view;
     }
 
-    private void uploadImage() {
-        storageReference = FirebaseStorage.getInstance().getReference().child(userID);
+    /*private void uploadImage() {
+        storageReference = FirebaseStorage.getInstance().getReference().child(userID + "." + getFileExtension(imageUri));
         storageReference.putFile(imageUri).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                uploadTask = storageReference.getFile(imageUri);
+                uploadTask.continueWith((Continuation<UploadTask.TaskSnapshot, Task<Uri>>) task1 -> {
+                    if (!task1.isSuccessful()) {
+                        throw task1.getException();
+                    }
+                    return storageReference.getDownloadUrl();
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            String mUri = downloadUri.toString();
+
+                            DocumentReference document = FirebaseFirestore.getInstance().collection("users").document(userID);
+                            document.update("imageURI",mUri);
+                            Toast.makeText(getContext(),"Slika profila uspješno promijenjena",Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getContext(),"FAIL",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
                 DocumentReference document = FirebaseFirestore.getInstance().collection("users").document(userID);
-                document.update("imageURI","userProfilePhoto");
+                document.update("imageURI",imageUri.toString());
                 Toast.makeText(getContext(),"Slika profila uspješno promijenjena",Toast.LENGTH_LONG).show();
 
             } else {
                 Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
             }
 
+        });
+    }*/
+    private void uploadImage() {
+        StorageReference ref = FirebaseStorage.getInstance().getReference().child(userID + "." + getFileExtension(imageUri));
+        ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        DocumentReference document = FirebaseFirestore.getInstance().collection("users").document(userID);
+                        document.update("imageURI",uri.toString());
+                        Toast.makeText(getContext(),"Slika profila uspješno promijenjena",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"RADI",Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull @NotNull Exception e) {
+                Toast.makeText(getContext(),"FAIL",Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -143,6 +203,12 @@ public class UserProfileFragment extends Fragment {
             });
 
 
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getContext().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
 
 
 }
