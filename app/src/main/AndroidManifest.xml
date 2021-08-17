@@ -14,9 +14,11 @@
         android:roundIcon="@mipmap/ikona3"
         android:supportsRtl="true"
         android:theme="@style/Theme.ZavrsniRad">
-        <activity android:name=".ProfilePreview"></activity>
-        <activity android:name=".Chat"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".Review"></activity>
+        <activity android:name=".ProfilePreview" />
+        <activity
+            android:name=".Chat"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".BottomNavigation"
             android:label="@string/title_activity_bottom_navigation" />

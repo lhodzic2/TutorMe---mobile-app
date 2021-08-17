@@ -6,15 +6,33 @@ import java.util.ArrayList;
 
 public class User {
     private String fullName,email,password;
-    private String imageURI,type;
+    private String imageURI = "default",type;
     private String id;
     private ArrayList<String> predmeti;
+    private float rating = 0;
 
     public User() { }
 
+    public User(String fullName, String email, String password, String imageURI, String type, String id, ArrayList<String> predmeti, float rating) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.imageURI = imageURI;
+        this.type = type;
+        this.id = id;
+        this.predmeti = predmeti;
+        this.rating = rating;
+    }
 
+    public float getRating() {
+        return rating;
+    }
 
-    public User(String fullName, String email, String password, String imageURI, String type, String id, ArrayList<String> predmeti) {
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+   /* public User(String fullName, String email, String password, String imageURI, String type, String id, ArrayList<String> predmeti) {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
@@ -51,7 +69,7 @@ public class User {
     public User(String fullName, String id) {
         this.fullName = fullName;
         this.id = id;
-    }
+    }*/
 
     public String getType() {
         return type;
@@ -113,35 +131,4 @@ public class User {
         this.id = id;
     }
 
-    public String validatePassword(String passwordText) {
-        if (passwordText.isEmpty()) {
-            return "Password je obavezan!";
-        } else if (passwordText.length() < 8) {
-            return "Password mora imati najmanje 8 karaktera!";
-        }
-        return "ok";
-    }
-
-    public String validateEmail(String emailText) {
-        if (emailText.isEmpty()) {
-            return "Email je obavezan!";
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()){
-            return "Unesite validan email!";
-        }
-        return "ok";
-    }
-
-    public String validateFirstName(String firstNameText) {
-        if (firstNameText.isEmpty()) {
-            return "Ime je obavezno!";
-        }
-        return "ok";
-    }
-
-    public String validateLastName(String lastNameText) {
-        if (lastNameText.isEmpty()) {
-            return "Prezime je obavezno!";
-        }
-        return "ok";
-    }
 }
