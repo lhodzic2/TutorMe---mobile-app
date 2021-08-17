@@ -20,14 +20,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PickingSubjects extends AppCompatActivity {
     ListView listView;
-    List list = new ArrayList();
+    List<String> list;
     ArrayAdapter adapter;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -43,10 +45,7 @@ public class PickingSubjects extends AppCompatActivity {
         listView = findViewById(R.id.subjectList);
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        list.add("Matematika");
-        list.add("Fizika");
-        list.add("Hemija");
-        list.add("Programiranje");
+        list = new ArrayList<>(Arrays.asList("Matematika", "Fizika", "Informatika", "Bosanski jezik i književnost", "Engleski jezik", "Njemački jezik", "Hemija","Programiranje","Nacrtna geometrija"));
         adapter = new ArrayAdapter(PickingSubjects.this, android.R.layout.simple_list_item_multiple_choice,list);
         listView.setAdapter(adapter);
     }

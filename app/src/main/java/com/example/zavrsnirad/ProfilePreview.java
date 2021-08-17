@@ -20,6 +20,7 @@ public class ProfilePreview extends AppCompatActivity {
     private Button btnSendMessage,btnRate;
     private Intent intent1;
     private FirebaseFirestore firebaseFirestore;
+    //TODO:dodati predmete i opis profila
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

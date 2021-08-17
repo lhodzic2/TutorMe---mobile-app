@@ -101,7 +101,7 @@ public class Register extends AppCompatActivity {
 
         if (! (validatePassword(passwordText) && validateEmail(emailText) && validateFirstName(firstNameText) && validateLastName(lastNameText) )) return;
         if (!studentRadio.isChecked() && !instruktorRadio.isChecked()) {
-            Toast.makeText(Register.this,"Molimo označite da li ste student ili instruktor",Toast.LENGTH_LONG);
+            Toast.makeText(Register.this,"Molimo označite da li ste student ili instruktor",Toast.LENGTH_LONG).show();
             return;
         }
         progressBar.setVisibility(View.VISIBLE);

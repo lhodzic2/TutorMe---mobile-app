@@ -67,6 +67,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         String subjects = arrayToString(user.getPredmeti());
         holder.subjectList.setText(subjects);
 
+        if (user.getRating() != 0) holder.rating.setText("Ocjena:\n" + Float.toString(user.getRating()));
+
         holder.itemView.setOnClickListener(v -> {
            /// Intent intent = new Intent(context, Chat.class);
             Intent intent = new Intent(context, ProfilePreview.class);
@@ -136,7 +138,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
     };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView username;
+        public TextView username,rating;
         public ImageView imageView;
         public TextView subjectList;
 
@@ -145,15 +147,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
             username = itemView.findViewById(R.id.usernameItem);
             imageView = itemView.findViewById(R.id.imageView);
             subjectList = itemView.findViewById(R.id.subjectList);
+            rating = itemView.findViewById(R.id.rating);
         }
     }
 
     private String arrayToString (ArrayList<String> subjects) {
             String arrayString = subjects.get(0);
             for (int i = 1; i < subjects.size(); i++) {
-                if (i != subjects.size() - 1) {
-                    arrayString = arrayString + ", " + subjects.get(i);
-                }
+                    arrayString = arrayString + "\n" + subjects.get(i);
+
             }
         return arrayString;
     }
