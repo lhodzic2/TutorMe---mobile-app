@@ -16,8 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class ProfilePreview extends AppCompatActivity {
 
     private ImageView profilePicture;
-    private TextView email,userName,ratingPreview;
-    private Button btnSendMessage,btnRate;
+    private TextView email, userName, ratingPreview;
+    private Button btnSendMessage, btnRate;
     private Intent intent1;
     private FirebaseFirestore firebaseFirestore;
     //TODO:dodati predmete i opis profila
@@ -32,7 +32,7 @@ public class ProfilePreview extends AppCompatActivity {
         btnSendMessage = findViewById(R.id.btnSendMessage);
         btnRate = findViewById(R.id.btnRate);
         userName = findViewById(R.id.profileNamePreview);
-        ratingPreview = findViewById(R.id.ratingPreview);
+        ratingPreview = findViewById(R.id.descriptionPreview);
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         intent1 = getIntent();
@@ -40,14 +40,14 @@ public class ProfilePreview extends AppCompatActivity {
 
         btnSendMessage.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), Chat.class);
-            intent.putExtra("id",userID);
+            intent.putExtra("id", userID);
             startActivity(intent);
             finish();
         });
 
         btnRate.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), Review.class);
-            intent.putExtra("id",userID);
+            intent.putExtra("id", userID);
             startActivity(intent);
             finish();
         });
@@ -56,7 +56,7 @@ public class ProfilePreview extends AppCompatActivity {
         document.addSnapshotListener((value, error) -> {
             User user = value.toObject(User.class);
             userName.setText(user.getFullName());
-            email.setText(user.getEmail());
+            //email.setText(user.getEmail());
             if (user.getRating() != 0) {
                 ratingPreview.setText(Float.toString(user.getRating()));
             }

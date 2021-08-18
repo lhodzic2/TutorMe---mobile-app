@@ -9,15 +9,14 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,42 +25,29 @@ import com.bumptech.glide.Glide;
 import com.example.zavrsnirad.ForgotPassword;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.User;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 public class UserProfileFragment extends Fragment {
 
-    private TextView userName,accountType,changePassword;
+    private TextView userName, email,changePassword,profileRating;
+    private EditText profileDescription;
     private ImageView image;
     private Button btnDelete,btnSave;
     private Uri imageUri;
     private String userID;
 
     private FirebaseFirestore firebaseFirestore;
-    private StorageReference storageReference;
+    private DocumentReference document;
 
 
 
@@ -82,14 +68,21 @@ public class UserProfileFragment extends Fragment {
         userName = view.findViewById(R.id.profileName);
         image = view.findViewById(R.id.profilePicture);
         changePassword = view.findViewById(R.id.changePassword);
-        accountType = view.findViewById(R.id.email);
+        email = view.findViewById(R.id.email);
+        profileRating = view.findViewById(R.id.profileRating);
+        profileDescription = view.findViewById(R.id.profileDescription);
 
-        //storageReference = FirebaseStorage.getInstance().getReference();
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        document = FirebaseFirestore.getInstance().collection("users").document(userID);
+        DocumentReference reference = firebaseFirestore.collection("users").document(userID);
+
 
         btnDelete = view.findViewById(R.id.btnDelete);
         btnSave = view.findViewById(R.id.btnSave);
 
-        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
         changePassword.setOnClickListener(v -> {
 
@@ -106,20 +99,21 @@ public class UserProfileFragment extends Fragment {
         });
         
         btnSave.setOnClickListener(v -> {
-            if (imageUri != null) uploadImage();
+            String descChange = profileDescription.getText().toString();
+            document.update("description",descChange);
+            if (imageUri != null) saveChanges();
         });
 
-        storageReference = FirebaseStorage.getInstance().getReference().child(userID);
 
-
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference reference = firebaseFirestore.collection("users").document(userID);
 
         reference.addSnapshotListener((value, error) -> {
             if (getContext() == null) return;
             User user = value.toObject(User.class);
             userName.setText(user.getFullName());
-            accountType.setText(user.getEmail());
+            email.setText(user.getEmail());
+            if (user.getRating() != 0) profileRating.setText(Float.toString(user.getRating()));
+            else profileRating.setText("Nema ocjena :(");
+            profileDescription.setText(user.getDescription());
             if (user.getImageURI().equals("default")) {
                 image.setImageResource(R.mipmap.ikona3);
             } else {
@@ -132,32 +126,14 @@ public class UserProfileFragment extends Fragment {
     }
 
 
-    private void uploadImage() {
-        StorageReference ref = FirebaseStorage.getInstance().getReference().child(userID + "." + getFileExtension(imageUri));
-        ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        DocumentReference document = FirebaseFirestore.getInstance().collection("users").document(userID);
-                        document.update("imageURI",uri.toString());
-                        Toast.makeText(getContext(),"Slika profila uspješno promijenjena",Toast.LENGTH_LONG).show();
-                        Toast.makeText(getContext(),"RADI",Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
+    private void saveChanges() {
+        StorageReference reference = FirebaseStorage.getInstance().getReference().child(userID + "." + getFileExtension(imageUri));
+        reference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> reference.getDownloadUrl().addOnSuccessListener(uri -> {
+            document.update("imageURI",uri.toString());
+            Toast.makeText(getContext(),"Promjene uspješno spašene",Toast.LENGTH_LONG).show();
+        })).addOnProgressListener(snapshot -> {
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
-                Toast.makeText(getContext(),"FAIL",Toast.LENGTH_LONG).show();
-            }
-        });
+        }).addOnFailureListener(e -> Toast.makeText(getContext(),"FAIL",Toast.LENGTH_LONG).show());
     }
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
@@ -170,8 +146,6 @@ public class UserProfileFragment extends Fragment {
                     }
                 }
             });
-
-
 
     private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContext().getContentResolver();

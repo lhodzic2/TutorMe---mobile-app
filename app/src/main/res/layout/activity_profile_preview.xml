@@ -16,17 +16,24 @@
             android:layout_height="match_parent">
 
 
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_baseline_star_24"
+                app:layout_constraintBottom_toBottomOf="@+id/ratingPreview"
+                app:layout_constraintStart_toEndOf="@+id/ratingPreview"
+                app:layout_constraintTop_toTopOf="@+id/ratingPreview"
+                app:layout_constraintVertical_bias="0.0" />
+
             <RelativeLayout
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/profilePicturePreview"
@@ -55,58 +62,79 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="42dp"
-                android:text="@string/e_mail"
-                android:textColor="#525354"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView10"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subjectsPreview">
+
+                <Button
+                    android:id="@+id/btnSendMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:text="Pošalji poruku" />
+
+                <Button
+                    android:id="@+id/btnRate"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:text="Ocijeni" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/descriptionPreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/textview"
+                android:textColor="#1B1A1A"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/ratingPreview"
+                app:layout_constraintEnd_toEndOf="@+id/ratingPreview"
+                app:layout_constraintStart_toStartOf="@+id/ratingPreview"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
-
-            <Button
-                android:id="@+id/btnSendMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="104dp"
-                android:text="Pošalji poruku"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnRate"
-                app:layout_constraintHorizontal_bias="0.503"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/btnRate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="60dp"
-                android:layout_marginBottom="104dp"
-                android:text="Ocijeni"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/ratingPreview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="405dp"
+                android:layout_marginBottom="16dp"
+                android:text="TextView"
+                android:textColor="#1B1A1A"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView10"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/subjectsPreview"
+                app:layout_constraintEnd_toEndOf="@+id/subjectsPreview"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/subjectsPreview"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionPreview" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/subjectsPreview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="16dp"
                 android:text="TextView"
-                app:layout_constraintEnd_toStartOf="@+id/ratingPreview"
-                app:layout_constraintStart_toEndOf="@id/email"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+                android:textColor="#1B1A1A"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ratingPreview" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

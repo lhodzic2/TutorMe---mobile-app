@@ -32,10 +32,10 @@
             android:ems="10"
             android:hint="@string/ime"
             android:inputType="textPersonName"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintBottom_toTopOf="@+id/lastName"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/lastName"/>
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <EditText
             android:id="@+id/lastName"
@@ -70,6 +70,7 @@
             android:hint="@string/password"
             android:inputType="textPassword"
             app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailRegister" />
@@ -107,19 +108,20 @@
             android:onClick="handleLogin"
             android:text="@string/log_in"
             android:textColor="#79E4CB"
+            app:layout_constraintBottom_toTopOf="@+id/progressBar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:layout_constraintBottom_toTopOf="@+id/progressBar" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="139dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/btnRegister"
-            app:layout_constraintHorizontal_bias="0.37"
+
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/passwordRegister"
             app:layout_constraintTop_toBottomOf="@+id/passwordRegister">
 
             <RadioButton

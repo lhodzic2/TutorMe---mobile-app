@@ -5,7 +5,7 @@ import android.util.Patterns;
 import java.util.ArrayList;
 
 public class User {
-    private String fullName,email,password;
+    private String fullName,email,password,description="";
     private String imageURI = "default",type;
     private String id;
     private ArrayList<String> predmeti;
@@ -13,7 +13,26 @@ public class User {
 
     public User() { }
 
-    public User(String fullName, String email, String password, String imageURI, String type, String id, ArrayList<String> predmeti, float rating) {
+    public User(String fullName, String email, String password, String description, String imageURI, String type, String id, ArrayList<String> predmeti, float rating) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.description = description;
+        this.imageURI = imageURI;
+        this.type = type;
+        this.id = id;
+        this.predmeti = predmeti;
+        this.rating = rating;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    /*public User(String fullName, String email, String password, String imageURI, String type, String id, ArrayList<String> predmeti, float rating) {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
@@ -22,7 +41,7 @@ public class User {
         this.id = id;
         this.predmeti = predmeti;
         this.rating = rating;
-    }
+    }*/
 
     public float getRating() {
         return rating;
