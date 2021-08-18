@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +18,6 @@ import com.example.zavrsnirad.model.User;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserMessageAdapter extends RecyclerView.Adapter<UserMessageAdapter.ViewHolder> {
@@ -78,7 +76,7 @@ public class UserMessageAdapter extends RecyclerView.Adapter<UserMessageAdapter.
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            username = itemView.findViewById(R.id.usernameItem);
+            username = itemView.findViewById(R.id.reviewerName);
             imageView = itemView.findViewById(R.id.imageView);
 
         }

@@ -91,27 +91,4 @@ public class SearchFragment extends Fragment {
 
     }
 
-   /*private void loadUsers1() {
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("instructors").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if(!document.getId().equals(userID)) {
-                            users.add(document.toObject(User.class));
-                        }
-                    }
-                    userAdapter = new UserAdapter(getContext(),users);
-                    recyclerView.setAdapter(userAdapter);
-                } else {
-
-                }
-
-            }
-        });
-
-
-    }*/
 }

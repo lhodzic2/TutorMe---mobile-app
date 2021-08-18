@@ -2,7 +2,6 @@ package com.example.zavrsnirad.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,30 +11,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
-import com.example.zavrsnirad.Chat;
 import com.example.zavrsnirad.ProfilePreview;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.User;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> implements Filterable {
@@ -144,9 +135,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            username = itemView.findViewById(R.id.usernameItem);
+            username = itemView.findViewById(R.id.reviewerName);
             imageView = itemView.findViewById(R.id.imageView);
-            subjectList = itemView.findViewById(R.id.subjectList);
+            subjectList = itemView.findViewById(R.id.review);
             rating = itemView.findViewById(R.id.rating);
         }
     }
@@ -155,7 +146,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
             String arrayString = subjects.get(0);
             for (int i = 1; i < subjects.size(); i++) {
                     arrayString = arrayString + "\n" + subjects.get(i);
-
             }
         return arrayString;
     }

@@ -33,7 +33,9 @@ public class Review extends AppCompatActivity {
     private EditText reviewText;
     private RatingBar ratingBar;
     private float rating;
-    private DocumentReference reviewDocument, userDocument;
+    private DocumentReference reviewDocument;
+    private DocumentReference userDocument;
+    private Task<DocumentSnapshot> myDocument;
     private Intent intent;
 
     @Override
@@ -51,6 +53,7 @@ public class Review extends AppCompatActivity {
         reviewDocument = FirebaseFirestore.getInstance().collection("users").document(userID).collection("reviews").document(reviewerID);
         userDocument = FirebaseFirestore.getInstance().collection("users").document(userID);
 
+
         ratingBar.setOnRatingBarChangeListener((ratingBar, rate, fromUser) -> {
             if (fromUser) rating = rate;
 
@@ -62,25 +65,34 @@ public class Review extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"NE moze dvaputa",Toast.LENGTH_LONG).show();
                     return;
                 } else {
-                    Map<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("reviewerID", reviewerID);
-                    hashMap.put("review", reviewText.getText().toString());
+                    myDocument = FirebaseFirestore.getInstance().collection("users").document(reviewerID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            String reviewerFullName = documentSnapshot.get("fullName").toString();
+                            Map<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("reviewerID", reviewerID);
+                            hashMap.put("review", reviewText.getText().toString());
+                            hashMap.put("rating",rating);
+                            hashMap.put("reviewerName",reviewerFullName);
+                            reviewDocument.set(hashMap);
 
-                    reviewDocument.set(hashMap);
-                    userDocument.get().addOnCompleteListener(task -> {
-                        User user = task.getResult().toObject(User.class);
+                            userDocument.get().addOnCompleteListener(task -> {
+                                User user = task.getResult().toObject(User.class);
 
-                        FirebaseFirestore.getInstance().collection("users/" + userID + "/reviews").get()
-                                .addOnCompleteListener(task1 -> {
-                                    int collectionSize = task1.getResult().size();
-                                    if (collectionSize != 1)
-                                        user.setRating((user.getRating() * (collectionSize - 1) + rating) / (float) collectionSize);
-                                    else user.setRating((user.getRating() + rating) / (float) collectionSize);
-                                    reviewDocument.set(hashMap);
-                                    userDocument.update("rating", user.getRating());
-                                    finish();
-                                });
+                                FirebaseFirestore.getInstance().collection("users/" + userID + "/reviews").get()
+                                        .addOnCompleteListener(task1 -> {
+                                            int collectionSize = task1.getResult().size();
+                                            if (collectionSize != 1)
+                                                user.setRating((user.getRating() * (collectionSize - 1) + rating) / (float) collectionSize);
+                                            else user.setRating((user.getRating() + rating) / (float) collectionSize);
+                                            reviewDocument.set(hashMap);
+                                            userDocument.update("rating", user.getRating());
+                                            finish();
+                                        });
+                            });
+                        }
                     });
+
                 }
             });
 

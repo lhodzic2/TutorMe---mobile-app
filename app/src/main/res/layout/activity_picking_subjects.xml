@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ListView
-            android:id="@+id/subjectList"
+            android:id="@+id/review"
             android:layout_width="match_parent"
             android:layout_height="544dp"
             android:layout_marginStart="24dp"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/uputstvo"
-            app:layout_constraintStart_toStartOf="@+id/subjectList"
+            app:layout_constraintStart_toStartOf="@+id/review"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
