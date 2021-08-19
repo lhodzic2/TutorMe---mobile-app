@@ -10,6 +10,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +24,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.zavrsnirad.Adapter.ReviewAdapter;
 import com.example.zavrsnirad.ForgotPassword;
 import com.example.zavrsnirad.R;
+import com.example.zavrsnirad.model.Review;
 import com.example.zavrsnirad.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -36,6 +44,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserProfileFragment extends Fragment {
 
@@ -45,6 +56,8 @@ public class UserProfileFragment extends Fragment {
     private Button btnDelete,btnSave;
     private Uri imageUri;
     private String userID;
+    private List<Review> reviews;
+    private RecyclerView recyclerView;
 
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference document;
@@ -67,10 +80,14 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         userName = view.findViewById(R.id.profileName);
         image = view.findViewById(R.id.profilePicture);
-        changePassword = view.findViewById(R.id.changePassword);
-        email = view.findViewById(R.id.email);
+        //changePassword = view.findViewById(R.id.changePassword);
+        //email = view.findViewById(R.id.email);
         profileRating = view.findViewById(R.id.profileRating);
         profileDescription = view.findViewById(R.id.profileDescription);
+        reviews = new ArrayList<>();
+        recyclerView = view.findViewById(R.id.recyclerProfile);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -79,15 +96,15 @@ public class UserProfileFragment extends Fragment {
         DocumentReference reference = firebaseFirestore.collection("users").document(userID);
 
 
+
         btnDelete = view.findViewById(R.id.btnDelete);
         btnSave = view.findViewById(R.id.btnSave);
 
 
-
-        changePassword.setOnClickListener(v -> {
+        /*changePassword.setOnClickListener(v -> {
 
             startActivity(new Intent(getContext(), ForgotPassword.class));
-        });
+        });*/
 
         btnDelete.setOnClickListener(v -> {
             FirebaseAuth.getInstance().getCurrentUser().delete();
@@ -110,15 +127,22 @@ public class UserProfileFragment extends Fragment {
             if (getContext() == null) return;
             User user = value.toObject(User.class);
             userName.setText(user.getFullName());
-            email.setText(user.getEmail());
-            if (user.getRating() != 0) profileRating.setText(Float.toString(user.getRating()));
-            else profileRating.setText("Nema ocjena :(");
-            profileDescription.setText(user.getDescription());
+            //email.setText(user.getEmail());
+
             if (user.getImageURI().equals("default")) {
                 image.setImageResource(R.mipmap.ikona3);
             } else {
                 Glide.with(getContext()).load(user.getImageURI()).into(image);
             }
+            if (user.getType().equals("instructor")) {
+                if (user.getRating() != 0) profileRating.setText(Float.toString(user.getRating()));
+                else profileRating.setText("Nema ocjena :(");
+                profileDescription.setText(user.getDescription());
+                loadReviews();
+            } else {
+                profileDescription.setVisibility(View.INVISIBLE);
+            }
+
         });
 
 
@@ -151,6 +175,19 @@ public class UserProfileFragment extends Fragment {
         ContentResolver contentResolver = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void loadReviews() {
+        firebaseFirestore.collection("users").document(userID).collection("reviews").addSnapshotListener((value, error) -> {
+            reviews.clear();
+            for (DocumentChange documentChange : value.getDocumentChanges()) {
+                reviews.add(documentChange.getDocument().toObject(com.example.zavrsnirad.model.Review.class));
+            }
+            ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(),reviews);
+            recyclerView.setAdapter(reviewAdapter);
+            reviewAdapter.notifyDataSetChanged();
+
+        });
     }
 
 

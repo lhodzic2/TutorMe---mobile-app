@@ -49,7 +49,7 @@ public class Chat extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private Intent intent;
     private EditText textInput;
-    private ImageButton btnSend;
+    private ImageButton btnSend,btnClose;
     private MessageAdapter adapter;
     private List<Message> messages;
     private RecyclerView recyclerView;
@@ -61,6 +61,7 @@ public class Chat extends AppCompatActivity {
 
         TextView userName = findViewById(R.id.userFullName);
         ImageView imageView = findViewById(R.id.profileIconChat);
+        btnClose = findViewById(R.id.close);
 
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerView = findViewById(R.id.recyclerMessages);
@@ -73,6 +74,11 @@ public class Chat extends AppCompatActivity {
         /*toolbar.setNavigationOnClickListener(v -> {
             finish();
         });*/
+
+        btnClose.setOnClickListener(v -> {
+            finish();
+        });
+
 
         intent = getIntent();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();

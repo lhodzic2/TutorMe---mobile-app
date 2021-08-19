@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class SearchFragment extends Fragment {
     private UserAdapter userAdapter;
     private List<User> users;
     private SearchView searchView;
+    private SwipeRefreshLayout swipe;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -56,9 +58,15 @@ public class SearchFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         searchView = view.findViewById(R.id.searchView);
+        swipe = view.findViewById(R.id.swipe);
 
         users = new ArrayList<>();
         loadUsers();
+
+        swipe.setOnRefreshListener(() -> {
+            userAdapter.notifyDataSetChanged();
+            swipe.setRefreshing(false);
+        });
 
         return view;
     }

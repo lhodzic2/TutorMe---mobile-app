@@ -37,7 +37,6 @@ public class ProfilePreview extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private String userID;
     private List<com.example.zavrsnirad.model.Review> reviews;
-    //TODO:dodati predmete i opis profila
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class ProfilePreview extends AppCompatActivity {
         reviews = new ArrayList<>();
 
         profilePicture = findViewById(R.id.profilePicturePreview);
-        email = findViewById(R.id.email);
+        //email = findViewById(R.id.email);
         btnSendMessage = findViewById(R.id.btnSendMessage);
         btnRate = findViewById(R.id.btnRate);
         userName = findViewById(R.id.profileNamePreview);
@@ -82,8 +81,8 @@ public class ProfilePreview extends AppCompatActivity {
         document.addSnapshotListener((value, error) -> {
             User user = value.toObject(User.class);
             userName.setText(user.getFullName());
-            descriptionPreview.setText(user.getDescription());
-            subjectsPreview.setText(arrayToString(user.getPredmeti()));
+            descriptionPreview.setText("Opis profila: " + user.getDescription());
+            subjectsPreview.setText("Predmeti: " + arrayToString(user.getPredmeti()));
             if (user.getRating() != 0) {
                 ratingPreview.setText("Ocjena: " + Float.toString(user.getRating()));
             } else {
@@ -116,7 +115,7 @@ public class ProfilePreview extends AppCompatActivity {
     private String arrayToString (ArrayList<String> subjects) {
         String arrayString = subjects.get(0);
         for (int i = 1; i < subjects.size(); i++) {
-            arrayString = arrayString + "\n" + subjects.get(i);
+            arrayString = arrayString + ", " + subjects.get(i);
 
         }
         return arrayString;

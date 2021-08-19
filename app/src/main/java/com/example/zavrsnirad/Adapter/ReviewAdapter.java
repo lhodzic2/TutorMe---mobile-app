@@ -38,7 +38,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public void onBindViewHolder(@NonNull @NotNull ReviewAdapter.ViewHolder holder, int position) {
         Review review = reviews.get(position);
         holder.reviewerName.setText(review.getReviewerName());
-        holder.reviewText.setText(review.getReview());
+        if (!review.getReview().equals("")) holder.reviewText.setText("Komentar:\n" + review.getReview());
+        else holder.reviewText.setText("");
         holder.rating.setText(Float.toString(review.getRating()));
 
     }

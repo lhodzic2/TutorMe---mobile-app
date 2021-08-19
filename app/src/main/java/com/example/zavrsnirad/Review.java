@@ -58,11 +58,15 @@ public class Review extends AppCompatActivity {
             if (fromUser) rating = rate;
 
         });
-//TODO:onemogućiti ostavljanje 0 zvjezdica
+
         btnReview.setOnClickListener(v -> {
+            if (rating == 0) {
+                Toast.makeText(getApplicationContext(),"Molimo ocijenite korisnika.",Toast.LENGTH_LONG).show();
+                return;
+            }
             reviewDocument.addSnapshotListener((value, error) -> {
                 if (value.exists()) {
-                    Toast.makeText(getApplicationContext(),"NE moze dvaputa",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Ne možete ostaviti komentar dva puta",Toast.LENGTH_LONG).show();
                     return;
                 } else {
                     myDocument = FirebaseFirestore.getInstance().collection("users").document(reviewerID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -87,6 +91,7 @@ public class Review extends AppCompatActivity {
                                             else user.setRating((user.getRating() + rating) / (float) collectionSize);
                                             reviewDocument.set(hashMap);
                                             userDocument.update("rating", user.getRating());
+                                            Toast.makeText(getApplicationContext(),"Recenzija uspješno poslana!",Toast.LENGTH_LONG).show();
                                             finish();
                                         });
                             });

@@ -20,14 +20,15 @@
                 android:id="@+id/buttonHolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/changePassword"
-                app:layout_constraintVertical_bias="0.25"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="2"
+                app:layout_constraintBottom_toTopOf="@+id/recyclerProfile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profileDescription">
 
                 <Button
                     android:id="@+id/btnSave"
@@ -69,57 +70,47 @@
                     android:layout_height="250dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="16dp"
                     android:clickable="true" />
-
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/profilePicture">
                 <TextView
                     android:id="@+id/profileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profilePicture"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginRight="8dp"
                     android:padding="8dp"
                     android:text="@string/profile"
                     android:textColor="@color/black"
-                    android:textSize="20sp"></TextView>
+                    android:textSize="18sp"></TextView>
+                <TextView
+                    android:id="@+id/profileRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="Ocjena:"
+                    android:textColor="#1B1A1A"
+                    android:textSize="18sp"
+                    />
+                </LinearLayout>
 
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/e_mail"
-                android:textColor="#1B1A1A"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@id/changePassword"
-                app:layout_constraintHorizontal_bias="0.179"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/changePassword" />
-
-            <TextView
-                android:id="@+id/changePassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:clickable="true"
-                android:text="Promijeni lozinku"
-                android:textColor="#79E4CB"
-                android:textSize="16sp"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/email"
-                app:layout_constraintTop_toTopOf="@+id/guideline4"
-                app:layout_constraintVertical_bias="0.0" />
 
             <EditText
                 android:id="@+id/profileDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Dodaj opis profila"
@@ -127,31 +118,25 @@
                 android:maxLines="3"
                 android:textColor="#1B1A1A"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/profileRating"
+                app:layout_constraintBottom_toTopOf="@+id/buttonHolder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+                app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/profileRating"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerProfile"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"
-                android:text="Ocjena:"
-                android:textColor="#1B1A1A"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profileDescription" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="496dp" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonHolder" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,6 +42,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
     }
 
 
+
     @NonNull
     @NotNull
     @Override
@@ -59,6 +60,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         holder.subjectList.setText(subjects);
 
         if (user.getRating() != 0) holder.rating.setText("Ocjena:\n" + Float.toString(user.getRating()));
+        else holder.rating.setText("");
 
         holder.itemView.setOnClickListener(v -> {
            /// Intent intent = new Intent(context, Chat.class);
@@ -144,9 +146,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
 
     private String arrayToString (ArrayList<String> subjects) {
             String arrayString = subjects.get(0);
+            if (subjects.size() >= 2) {
+                arrayString = arrayString + ", " + subjects.get(1) + ", ...";
+            }/*
             for (int i = 1; i < subjects.size(); i++) {
-                    arrayString = arrayString + "\n" + subjects.get(i);
-            }
+                    arrayString = arrayString + ", " + subjects.get(i);
+            }*/
         return arrayString;
     }
 }

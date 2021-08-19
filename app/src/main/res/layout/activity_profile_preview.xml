@@ -16,32 +16,24 @@
             android:layout_height="match_parent">
 
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:src="@drawable/ic_baseline_star_24"
-                app:layout_constraintBottom_toBottomOf="@+id/ratingPreview"
-                app:layout_constraintStart_toEndOf="@+id/ratingPreview"
-                app:layout_constraintTop_toTopOf="@+id/ratingPreview"
-                app:layout_constraintVertical_bias="0.0" />
-
             <RelativeLayout
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/profilePicturePreview"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="16dp"
                     android:clickable="true" />
 
                 <TextView
@@ -50,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profilePicturePreview"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="16dp"
                     android:padding="8dp"
                     android:text="@string/profile"
                     android:textColor="@color/black"
@@ -66,14 +58,16 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+
                 android:orientation="horizontal"
                 android:weightSum="2"
-                app:layout_constraintBottom_toTopOf="@+id/recyclerReview"
+                app:layout_constraintBottom_toTopOf="@+id/textContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/subjectsPreview"
-                app:layout_constraintVertical_bias="0.24000001">
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
                 <Button
                     android:id="@+id/btnSendMessage"
@@ -96,58 +90,77 @@
                     android:text="Ocijeni" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/descriptionPreview"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/textContainer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:text="@string/textview"
-                android:textColor="#1B1A1A"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/ratingPreview"
-                app:layout_constraintEnd_toEndOf="@+id/ratingPreview"
-                app:layout_constraintStart_toStartOf="@+id/ratingPreview"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
-
-            <TextView
-                android:id="@+id/ratingPreview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="TextView"
-                android:textColor="#1B1A1A"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/subjectsPreview"
-                app:layout_constraintEnd_toEndOf="@+id/subjectsPreview"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/subjectsPreview"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionPreview" />
-
-            <TextView
-                android:id="@+id/subjectsPreview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="TextView"
-                android:textColor="#1B1A1A"
-                android:textSize="16sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                android:weightSum="3"
+                app:layout_constraintBottom_toTopOf="@+id/recyclerReview"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ratingPreview" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                <TextView
+                    android:id="@+id/descriptionPreview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_margin="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="8sp"
+                    android:padding="5dp"
+                    android:text="@string/textview"
+                    android:textColor="#1B1A1A"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/ratingPreview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_margin="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="8sp"
+                    android:padding="5dp"
+                    android:text="TextView"
+                    android:textColor="#1B1A1A"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/subjectsPreview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_margin="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="8sp"
+                    android:padding="5dp"
+                    android:text="TextView"
+                    android:textColor="#1B1A1A"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/textContainer" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
