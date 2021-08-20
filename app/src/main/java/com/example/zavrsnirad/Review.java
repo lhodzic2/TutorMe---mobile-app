@@ -86,8 +86,7 @@ public class Review extends AppCompatActivity {
                                 FirebaseFirestore.getInstance().collection("users/" + userID + "/reviews").get()
                                         .addOnCompleteListener(task1 -> {
                                             int collectionSize = task1.getResult().size();
-                                            if (collectionSize != 1)
-                                                user.setRating((user.getRating() * (collectionSize - 1) + rating) / (float) collectionSize);
+                                            if (collectionSize != 1) user.setRating((user.getRating() * (collectionSize - 1) + rating) / (float) collectionSize);
                                             else user.setRating((user.getRating() + rating) / (float) collectionSize);
                                             reviewDocument.set(hashMap);
                                             userDocument.update("rating", user.getRating());

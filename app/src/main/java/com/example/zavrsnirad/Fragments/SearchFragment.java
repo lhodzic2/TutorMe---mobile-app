@@ -64,17 +64,24 @@ public class SearchFragment extends Fragment {
         loadUsers();
 
         swipe.setOnRefreshListener(() -> {
-            userAdapter.notifyDataSetChanged();
+            loadUsers();
             swipe.setRefreshing(false);
         });
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUsers();
+    }
+
     private void loadUsers() {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.collection("users").addSnapshotListener((value, error) -> {
+            users.clear();
             for (DocumentChange documentChange : value.getDocumentChanges()) {
                 if (documentChange.getType() == DocumentChange.Type.ADDED && !documentChange.getDocument().getId().equals(userID) && documentChange.getDocument().get("type").equals("instructor")) {
                     users.add(documentChange.getDocument().toObject(User.class));
