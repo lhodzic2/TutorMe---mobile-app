@@ -20,6 +20,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class UserProfileFragment extends Fragment {
     private String userID;
     private List<Review> reviews;
     private RecyclerView recyclerView;
+    private ProgressBar progressProfile;
 
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference document;
@@ -80,6 +82,7 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         userName = view.findViewById(R.id.profileName);
         image = view.findViewById(R.id.profilePicture);
+        progressProfile = view.findViewById(R.id.progressProfile);
         //changePassword = view.findViewById(R.id.changePassword);
         //email = view.findViewById(R.id.email);
         profileRating = view.findViewById(R.id.profileRating);
@@ -119,6 +122,7 @@ public class UserProfileFragment extends Fragment {
             String descChange = profileDescription.getText().toString();
             document.update("description",descChange);
             if (imageUri != null) saveChanges();
+            else if (getContext() != null) Toast.makeText(getContext(),"Uspješno promijenjen opis profila",Toast.LENGTH_SHORT).show();
         });
 
 
@@ -132,7 +136,10 @@ public class UserProfileFragment extends Fragment {
             if (user.getImageURI().equals("default")) {
                 image.setImageResource(R.mipmap.ikona3);
             } else {
+                progressProfile.setVisibility(View.VISIBLE);
                 Glide.with(getContext()).load(user.getImageURI()).into(image);
+                progressProfile.setVisibility(View.INVISIBLE);
+
             }
             if (user.getType().equals("instructor")) {
                 if (user.getRating() != 0) profileRating.setText(Float.toString(user.getRating()));
@@ -141,6 +148,7 @@ public class UserProfileFragment extends Fragment {
                 loadReviews();
             } else {
                 profileDescription.setVisibility(View.INVISIBLE);
+                profileRating.setVisibility(View.INVISIBLE);
             }
 
         });
@@ -151,13 +159,18 @@ public class UserProfileFragment extends Fragment {
 
 
     private void saveChanges() {
+        progressProfile.setVisibility(View.VISIBLE);
         StorageReference reference = FirebaseStorage.getInstance().getReference().child(userID + "." + getFileExtension(imageUri));
         reference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> reference.getDownloadUrl().addOnSuccessListener(uri -> {
             document.update("imageURI",uri.toString());
-            Toast.makeText(getContext(),"Promjene uspješno spašene",Toast.LENGTH_LONG).show();
+            profileRating.setVisibility(View.INVISIBLE);
+            if (getContext() != null )Toast.makeText(getContext(),"Promjene uspješno spašene",Toast.LENGTH_LONG).show();
         })).addOnProgressListener(snapshot -> {
-
-        }).addOnFailureListener(e -> Toast.makeText(getContext(),"FAIL",Toast.LENGTH_LONG).show());
+            progressProfile.setVisibility(View.VISIBLE);
+        }).addOnFailureListener(e -> {
+            profileRating.setVisibility(View.INVISIBLE);
+            Toast.makeText(getContext(), "Greška", Toast.LENGTH_LONG).show();
+        });
     }
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
@@ -186,7 +199,6 @@ public class UserProfileFragment extends Fragment {
             ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(),reviews);
             recyclerView.setAdapter(reviewAdapter);
             reviewAdapter.notifyDataSetChanged();
-
         });
     }
 

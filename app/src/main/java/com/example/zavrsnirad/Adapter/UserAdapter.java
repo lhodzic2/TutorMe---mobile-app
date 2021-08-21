@@ -2,6 +2,7 @@ package com.example.zavrsnirad.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.number.Precision;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         String subjects = arrayToString(user.getPredmeti());
         holder.subjectList.setText(subjects);
 
-        if (user.getRating() != 0) holder.rating.setText("Ocjena:\n" + Float.toString(user.getRating()));
+        if (user.getRating() != 0) holder.rating.setText("Ocjena:\n" + String.format("%.2f",user.getRating()));
         else holder.rating.setText("");
 
         holder.itemView.setOnClickListener(v -> {

@@ -84,7 +84,7 @@ public class ProfilePreview extends AppCompatActivity {
             descriptionPreview.setText("Opis profila: " + user.getDescription());
             subjectsPreview.setText("Predmeti: " + arrayToString(user.getPredmeti()));
             if (user.getRating() != 0) {
-                ratingPreview.setText("Ocjena: " + Float.toString(user.getRating()));
+                ratingPreview.setText("Ocjena: " + String.format("%.2f",user.getRating()));
             } else {
                 ratingPreview.setText("Nema ocjena :(");
             }

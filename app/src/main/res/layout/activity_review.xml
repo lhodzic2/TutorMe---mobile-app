@@ -10,15 +10,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/btnReview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="54dp"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="24dp"
-            android:text="Pošalji"
+            android:text="@string/po_alji"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/reviewText"
             app:layout_constraintHorizontal_bias="1.0"
@@ -29,14 +29,15 @@
             android:id="@+id/reviewText"
             android:layout_width="259dp"
             android:layout_height="239dp"
-            android:layout_marginEnd="97dp"
+
+            android:background="@drawable/text_border"
             android:ems="10"
             android:gravity="start|top"
-            android:hint="Unesite vaše mišljenje"
+            android:hint="@string/unesite_va_e_mi_ljenje"
             android:inputType="textMultiLine"
             android:maxLines="10"
+            android:padding="5dp"
             app:layout_constraintBottom_toTopOf="@+id/btnReview"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/ratingBar"
             app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
@@ -44,37 +45,39 @@
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="116dp"
-            android:layout_marginBottom="32dp"
+
+            android:layout_marginBottom="8dp"
             android:numStars="5"
             android:progressTint="@color/yellow"
             android:rating="0"
             android:stepSize="0.5"
             app:layout_constraintBottom_toTopOf="@+id/reviewText"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@id/textView11" />
 
         <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="TextView"
-        android:textColor="#1B1A1A"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.35"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Ocijenite vašeg instruktora :)" />
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/uputstvo2"
+            android:textColor="#1B1A1A"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.19999999"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Ocjena: "
+            android:layout_marginBottom="8dp"
+            android:text="@string/ocjena"
             android:textColor="#1B1A1A"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/ratingBar"

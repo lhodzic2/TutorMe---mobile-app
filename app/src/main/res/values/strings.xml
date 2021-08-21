@@ -29,4 +29,8 @@
     <string name="unesite_poruku">Unesite poruku</string>
     <string name="pretraga_po_imenu_ili_predmetu">Tražite po imenu ili predmetu</string>
     <string name="uputstvo">Izaberite predmete iz kojih držite časove</string>
+    <string name="uputstvo2">Ocijenite vašeg instruktora :)</string>
+    <string name="unesite_va_e_mi_ljenje">Unesite vaše mišljenje</string>
+    <string name="po_alji">Pošalji</string>
+    <string name="ocjena">Ocjena:</string>
 </resources>

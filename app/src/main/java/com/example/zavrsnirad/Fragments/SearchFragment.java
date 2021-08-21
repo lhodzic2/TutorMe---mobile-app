@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.example.zavrsnirad.Adapter.UserAdapter;
@@ -38,6 +39,7 @@ public class SearchFragment extends Fragment {
     private List<User> users;
     private SearchView searchView;
     private SwipeRefreshLayout swipe;
+    private ProgressBar progressSearch;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -53,7 +55,7 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search,container,false);
 
-
+        progressSearch = view.findViewById(R.id.progressSearch);
         recyclerView = view.findViewById(R.id.recyclerViewUsers);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -78,6 +80,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void loadUsers() {
+        progressSearch.setVisibility(View.VISIBLE);
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.collection("users").addSnapshotListener((value, error) -> {
@@ -102,6 +105,7 @@ public class SearchFragment extends Fragment {
             });
             recyclerView.setAdapter(userAdapter);
             userAdapter.notifyDataSetChanged();
+            progressSearch.setVisibility(View.INVISIBLE);
         });
 
     }

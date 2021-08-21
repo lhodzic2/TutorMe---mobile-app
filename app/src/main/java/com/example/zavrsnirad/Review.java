@@ -64,37 +64,66 @@ public class Review extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Molimo ocijenite korisnika.",Toast.LENGTH_LONG).show();
                 return;
             }
-            reviewDocument.addSnapshotListener((value, error) -> {
+            /*reviewDocument.addSnapshotListener((value, error) -> {
                 if (value.exists()) {
                     Toast.makeText(getApplicationContext(),"Ne možete ostaviti komentar dva puta",Toast.LENGTH_LONG).show();
                     return;
                 } else {
-                    myDocument = FirebaseFirestore.getInstance().collection("users").document(reviewerID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            String reviewerFullName = documentSnapshot.get("fullName").toString();
-                            Map<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("reviewerID", reviewerID);
-                            hashMap.put("review", reviewText.getText().toString());
-                            hashMap.put("rating",rating);
-                            hashMap.put("reviewerName",reviewerFullName);
-                            reviewDocument.set(hashMap);
+                    myDocument = FirebaseFirestore.getInstance().collection("users").document(reviewerID).get().addOnSuccessListener(documentSnapshot -> {
+                        String reviewerFullName = documentSnapshot.get("fullName").toString();
+                        Map<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("reviewerID", reviewerID);
+                        hashMap.put("review", reviewText.getText().toString());
+                        hashMap.put("rating",rating);
+                        hashMap.put("reviewerName",reviewerFullName);
+                        reviewDocument.set(hashMap);
 
-                            userDocument.get().addOnCompleteListener(task -> {
-                                User user = task.getResult().toObject(User.class);
+                        userDocument.get().addOnCompleteListener(task -> {
+                            User user = task.getResult().toObject(User.class);
 
-                                FirebaseFirestore.getInstance().collection("users/" + userID + "/reviews").get()
-                                        .addOnCompleteListener(task1 -> {
-                                            int collectionSize = task1.getResult().size();
-                                            if (collectionSize != 1) user.setRating((user.getRating() * (collectionSize - 1) + rating) / (float) collectionSize);
-                                            else user.setRating((user.getRating() + rating) / (float) collectionSize);
-                                            reviewDocument.set(hashMap);
-                                            userDocument.update("rating", user.getRating());
-                                            Toast.makeText(getApplicationContext(),"Recenzija uspješno poslana!",Toast.LENGTH_LONG).show();
-                                            finish();
-                                        });
-                            });
-                        }
+                            FirebaseFirestore.getInstance().collection("users/" + userID + "/reviews").get()
+                                    .addOnCompleteListener(task1 -> {
+                                        int collectionSize = task1.getResult().size();
+                                        if (collectionSize != 1) user.setRating((user.getRating() * (collectionSize - 1) + rating) / (float) collectionSize);
+                                        else user.setRating((user.getRating() + rating) / (float) collectionSize);
+                                        reviewDocument.set(hashMap);
+                                        userDocument.update("rating", user.getRating());
+                                        Toast.makeText(getApplicationContext(),"Recenzija uspješno poslana!",Toast.LENGTH_LONG).show();
+                                        finish();
+                                    });
+                        });
+                    });
+
+                }
+            });*/
+            reviewDocument.get().addOnSuccessListener(value -> {
+                if (value.exists()) {
+                    Toast.makeText(getApplicationContext(),"Ne možete ostaviti komentar dva puta",Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    myDocument = FirebaseFirestore.getInstance().collection("users").document(reviewerID).get().addOnSuccessListener(documentSnapshot -> {
+                        String reviewerFullName = documentSnapshot.get("fullName").toString();
+                        Map<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("reviewerID", reviewerID);
+                        hashMap.put("review", reviewText.getText().toString());
+                        hashMap.put("rating",rating);
+                        hashMap.put("reviewerName",reviewerFullName);
+                        reviewDocument.set(hashMap);
+
+                        userDocument.get().addOnCompleteListener(task -> {
+                            User user = task.getResult().toObject(User.class);
+
+                            FirebaseFirestore.getInstance().collection("users/" + userID + "/reviews").get()
+                                    .addOnCompleteListener(task1 -> {
+                                        int collectionSize = task1.getResult().size();
+                                        if (collectionSize != 1) user.setRating((user.getRating() * (collectionSize - 1) + rating) / (float) collectionSize);
+                                        else user.setRating((user.getRating() + rating) / (float) collectionSize);
+                                        reviewDocument.set(hashMap);
+                                        userDocument.update("rating", user.getRating());
+                                        Toast.makeText(getApplicationContext(),"Recenzija uspješno poslana!",Toast.LENGTH_LONG).show();
+                                        finish();
+                                    });
+                        });
                     });
 
                 }

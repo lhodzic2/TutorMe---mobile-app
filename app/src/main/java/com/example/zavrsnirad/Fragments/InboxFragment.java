@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.zavrsnirad.Adapter.UserMessageAdapter;
 import com.example.zavrsnirad.R;
@@ -42,6 +43,7 @@ public class InboxFragment extends Fragment {
     private DatabaseReference db;
     private List<MessageList> messages;
     private RecyclerView recycler;
+    private ProgressBar progressInbox;
 
     public InboxFragment() {
         // Required empty public constructor
@@ -58,6 +60,7 @@ public class InboxFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inbox, container, false);
+        progressInbox = view.findViewById(R.id.progressInbox);
         recycler = view.findViewById(R.id.recyclerInbox);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -70,6 +73,7 @@ public class InboxFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 messages.clear();
+                progressInbox.setVisibility(View.VISIBLE);
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     MessageList messageList = ds.getValue(MessageList.class);
                     messages.add(messageList);
@@ -109,5 +113,6 @@ public class InboxFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+        progressInbox.setVisibility(View.INVISIBLE);
     }
 }

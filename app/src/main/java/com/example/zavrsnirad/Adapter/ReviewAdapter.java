@@ -40,7 +40,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.reviewerName.setText(review.getReviewerName());
         if (!review.getReview().equals("")) holder.reviewText.setText("Komentar:\n" + review.getReview());
         else holder.reviewText.setText("");
-        holder.rating.setText(Float.toString(review.getRating()));
+        holder.rating.setText(String.format("%.2f",review.getRating()));
 
     }
 
