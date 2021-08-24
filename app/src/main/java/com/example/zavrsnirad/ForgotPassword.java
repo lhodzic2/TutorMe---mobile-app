@@ -1,8 +1,5 @@
 package com.example.zavrsnirad;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -11,11 +8,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
 
-import org.jetbrains.annotations.NotNull;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassword extends AppCompatActivity {
     private ProgressBar progressBar;

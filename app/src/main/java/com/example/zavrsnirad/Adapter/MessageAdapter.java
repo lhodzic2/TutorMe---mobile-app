@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.Message;
-import com.example.zavrsnirad.model.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.jetbrains.annotations.NotNull;
 

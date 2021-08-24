@@ -1,14 +1,13 @@
 package com.example.zavrsnirad;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -41,12 +40,6 @@ public class PickingSubjects extends AppCompatActivity {
         list = new ArrayList<>(Arrays.asList("Matematika", "Fizika", "Informatika", "Bosanski jezik i književnost", "Engleski jezik", "Njemački jezik", "Hemija","Programiranje","Nacrtna geometrija"));
         adapter = new ArrayAdapter(PickingSubjects.this, android.R.layout.simple_list_item_multiple_choice,list);
         listView.setAdapter(adapter);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
-        return true;
     }
 
     public void handleNext(View view) {

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.Review;
-import com.example.zavrsnirad.model.User;
 
 import org.jetbrains.annotations.NotNull;
 

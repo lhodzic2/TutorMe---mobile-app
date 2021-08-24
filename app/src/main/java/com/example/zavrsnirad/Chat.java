@@ -1,21 +1,16 @@
 package com.example.zavrsnirad;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.zavrsnirad.Adapter.MessageAdapter;
@@ -28,13 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -70,10 +60,6 @@ public class Chat extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setStackFromEnd(true); //TODO:provjeriti
         recyclerView.setLayoutManager(layoutManager);
-
-        /*toolbar.setNavigationOnClickListener(v -> {
-            finish();
-        });*/
 
         btnClose.setOnClickListener(v -> {
             finish();

@@ -1,28 +1,21 @@
 package com.example.zavrsnirad;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.zavrsnirad.Adapter.ReviewAdapter;
-import com.example.zavrsnirad.Adapter.UserAdapter;
 import com.example.zavrsnirad.model.User;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +23,7 @@ import java.util.List;
 public class ProfilePreview extends AppCompatActivity {
 
     private ImageView profilePicture;
-    private TextView email, userName, descriptionPreview,ratingPreview, subjectsPreview;
+    private TextView userName, descriptionPreview,ratingPreview, subjectsPreview;
     private RecyclerView recyclerView;
     private Button btnSendMessage, btnRate;
     private Intent intent1;
@@ -45,7 +38,6 @@ public class ProfilePreview extends AppCompatActivity {
         reviews = new ArrayList<>();
 
         profilePicture = findViewById(R.id.profilePicturePreview);
-        //email = findViewById(R.id.email);
         btnSendMessage = findViewById(R.id.btnSendMessage);
         btnRate = findViewById(R.id.btnRate);
         userName = findViewById(R.id.profileNamePreview);
@@ -57,8 +49,6 @@ public class ProfilePreview extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerReview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-
 
         intent1 = getIntent();
         userID = intent1.getStringExtra("id");

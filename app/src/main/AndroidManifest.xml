@@ -20,9 +20,6 @@
             android:name=".Chat"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".BottomNavigation"
-            android:label="@string/title_activity_bottom_navigation" />
-        <activity
             android:name=".PickingSubjects"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

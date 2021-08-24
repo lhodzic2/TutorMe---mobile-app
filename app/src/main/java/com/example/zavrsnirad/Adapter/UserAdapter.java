@@ -2,7 +2,6 @@ package com.example.zavrsnirad.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.icu.number.Precision;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,10 +148,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
             String arrayString = subjects.get(0);
             if (subjects.size() >= 2) {
                 arrayString = arrayString + ", " + subjects.get(1) + ", ...";
-            }/*
-            for (int i = 1; i < subjects.size(); i++) {
-                    arrayString = arrayString + ", " + subjects.get(i);
-            }*/
+            }
         return arrayString;
     }
 }

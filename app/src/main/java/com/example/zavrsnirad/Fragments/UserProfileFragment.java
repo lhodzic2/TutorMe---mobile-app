@@ -1,18 +1,8 @@
 package com.example.zavrsnirad.Fragments;
 
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,27 +14,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.zavrsnirad.Adapter.ReviewAdapter;
-import com.example.zavrsnirad.ForgotPassword;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.Review;
 import com.example.zavrsnirad.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +70,6 @@ public class UserProfileFragment extends Fragment {
         userName = view.findViewById(R.id.profileName);
         image = view.findViewById(R.id.profilePicture);
         progressProfile = view.findViewById(R.id.progressProfile);
-        //changePassword = view.findViewById(R.id.changePassword);
-        //email = view.findViewById(R.id.email);
         profileRating = view.findViewById(R.id.profileRating);
         profileDescription = view.findViewById(R.id.profileDescription);
         reviews = new ArrayList<>();
@@ -98,16 +83,8 @@ public class UserProfileFragment extends Fragment {
         document = FirebaseFirestore.getInstance().collection("users").document(userID);
         DocumentReference reference = firebaseFirestore.collection("users").document(userID);
 
-
-
         btnDelete = view.findViewById(R.id.btnDelete);
         btnSave = view.findViewById(R.id.btnSave);
-
-
-        /*changePassword.setOnClickListener(v -> {
-
-            startActivity(new Intent(getContext(), ForgotPassword.class));
-        });*/
 
         btnDelete.setOnClickListener(v -> {
             FirebaseAuth.getInstance().getCurrentUser().delete();
@@ -125,8 +102,6 @@ public class UserProfileFragment extends Fragment {
             else if (getContext() != null) Toast.makeText(getContext(),"Uspješno promijenjen opis profila",Toast.LENGTH_SHORT).show();
         });
 
-
-
         reference.addSnapshotListener((value, error) -> {
             if (getContext() == null) return;
             User user = value.toObject(User.class);
@@ -142,7 +117,7 @@ public class UserProfileFragment extends Fragment {
 
             }
             if (user.getType().equals("instructor")) {
-                if (user.getRating() != 0) profileRating.setText(Float.toString(user.getRating()));
+                if (user.getRating() != 0) profileRating.setText(String.format("%.2f",user.getRating()));
                 else profileRating.setText("Nema ocjena :(");
                 profileDescription.setText(user.getDescription());
                 loadReviews();
@@ -152,8 +127,6 @@ public class UserProfileFragment extends Fragment {
             }
 
         });
-
-
         return view;
     }
 
