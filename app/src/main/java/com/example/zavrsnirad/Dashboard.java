@@ -8,6 +8,10 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.zavrsnirad.Fragments.InboxFragment;
 import com.example.zavrsnirad.Fragments.SearchFragment;
@@ -17,37 +21,18 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Dashboard extends AppCompatActivity {
 
-    BottomNavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        navigationView = findViewById(R.id.bottom_nav);
+        BottomNavigationView navigationView = findViewById(R.id.bottom_nav);
 
-        navigationView.setOnNavigationItemSelectedListener(navListener);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host);
+        NavController navController = navHostFragment.getNavController();
+        NavigationUI.setupWithNavController(navigationView,navController);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,new SearchFragment()).commit();
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
-        Fragment selectedFragment = null;
-
-        switch (item.getItemId()) {
-            case R.id.home:
-                selectedFragment = new SearchFragment();
-                break;
-            case R.id.inbox:
-                selectedFragment = new InboxFragment();
-                break;
-            case R.id.profile:
-                selectedFragment = new UserProfileFragment();
-                break;
-        }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,selectedFragment).commit();
-        return true;
-    };
 
     //Log out
 
