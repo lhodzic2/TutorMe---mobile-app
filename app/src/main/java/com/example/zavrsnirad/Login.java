@@ -47,7 +47,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    @Override
+  /*  @Override
     protected void onStart() {
         super.onStart();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -55,7 +55,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(getApplicationContext(), Dashboard.class));
             finish();
         }
-    }
+    }*/
 
     @Override
     public void onClick(View v) {

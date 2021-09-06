@@ -108,41 +108,38 @@ public class Register extends AppCompatActivity {
         firebaseAuth.createUserWithEmailAndPassword(emailText,passwordText).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(Register.this).setTitle("Verifikacija")
-                                .setMessage("Molimo verificirajte vaš email.")
-                                .setPositiveButton("Ok", (dialog, which) -> {
-                                    startActivity(new Intent(getApplicationContext(), Login.class));
-                                    dialog.dismiss();
-                                    finish();
-                                }).create();
+                user.sendEmailVerification().addOnSuccessListener(unused -> {
+                    AlertDialog alertDialog = new AlertDialog.Builder(Register.this).setTitle("Verifikacija")
+                            .setMessage("Molimo verificirajte vaš email.")
+                            .setPositiveButton("Ok", (dialog, which) -> {
+                                startActivity(new Intent(getApplicationContext(), Login.class));
+                                dialog.dismiss();
+                                finish();
+                            }).create();
 
-                        userID = firebaseAuth.getCurrentUser().getUid();
-                        Map<String,Object> hashMap = new HashMap<>();
-                        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-                        if (!studentRadio.isChecked()) {
-                            hashMap.put("type","instructor");
-                        } else {
-                            hashMap.put("type","student");
-                        }
+                    userID = firebaseAuth.getCurrentUser().getUid();
+                    Map<String,Object> hashMap = new HashMap<>();
+                    DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+                    if (!studentRadio.isChecked()) {
+                        hashMap.put("type","instructor");
+                    } else {
+                        hashMap.put("type","student");
+                    }
 
-                        hashMap.put("fullName",firstNameText + " " + lastNameText);
-                        hashMap.put("email",emailText);
-                        hashMap.put("id",userID);
-                        hashMap.put("imageURI","default");
+                    hashMap.put("fullName",firstNameText + " " + lastNameText);
+                    hashMap.put("email",emailText);
+                    hashMap.put("id",userID);
+                    hashMap.put("imageURI","default");
 
-                        documentReference.set(hashMap);
+                    documentReference.set(hashMap);
 
-                        if (!instruktorRadio.isChecked())  {
-                            progressBar.setVisibility(View.INVISIBLE);
-                            alertDialog.show();
-                        }
-                        else {
-                            startActivity(new Intent(getApplicationContext(), PickingSubjects.class));
-                            finish();
-                        }
+                    if (!instruktorRadio.isChecked())  {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        alertDialog.show();
+                    }
+                    else {
+                        startActivity(new Intent(getApplicationContext(), PickingSubjects.class));
+                        finish();
                     }
                 }).addOnFailureListener(e -> Toast.makeText(Register.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
 
