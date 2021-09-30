@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
-            startActivity(new Intent(getApplicationContext(), Dashboard.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
     }
@@ -111,7 +111,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             if (task.isSuccessful()) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user.isEmailVerified()) {
-                    startActivity(new Intent(this,Dashboard.class));
+                    startActivity(new Intent(this, MainActivity.class));
                     finish();
                 } else {
                     user.sendEmailVerification();

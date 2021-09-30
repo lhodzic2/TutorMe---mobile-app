@@ -51,7 +51,7 @@ public class Review extends AppCompatActivity {
         });
 
         btnReview.setOnClickListener(v -> {
-            if (rating == 0) {
+            if (rating <= 1) {
                 Toast.makeText(getApplicationContext(),"Molimo ocijenite korisnika.",Toast.LENGTH_LONG).show();
                 return;
             }
@@ -87,8 +87,6 @@ public class Review extends AppCompatActivity {
 
                 }
             });
-
-
         });
     }
 }

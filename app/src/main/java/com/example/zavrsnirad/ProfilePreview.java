@@ -66,6 +66,7 @@ public class ProfilePreview extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
         loadReviews();
         DocumentReference document = firebaseFirestore.collection("users").document(userID);
         document.addSnapshotListener((value, error) -> {

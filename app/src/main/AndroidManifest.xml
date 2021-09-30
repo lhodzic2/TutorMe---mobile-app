@@ -25,7 +25,7 @@
         <activity
             android:name=".ForgotPassword"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Dashboard" />
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".Register"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"

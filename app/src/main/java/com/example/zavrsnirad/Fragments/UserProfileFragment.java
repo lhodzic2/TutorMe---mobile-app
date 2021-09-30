@@ -1,6 +1,7 @@
 package com.example.zavrsnirad.Fragments;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.zavrsnirad.Adapter.ReviewAdapter;
+import com.example.zavrsnirad.ForgotPassword;
 import com.example.zavrsnirad.R;
 import com.example.zavrsnirad.model.Review;
 import com.example.zavrsnirad.model.User;
@@ -41,7 +43,7 @@ public class UserProfileFragment extends Fragment {
     private TextView userName, email,changePassword,profileRating;
     private EditText profileDescription;
     private ImageView image;
-    private Button btnDelete,btnSave;
+    private Button btnChangePassword,btnSave;
     private Uri imageUri;
     private String userID;
     private List<Review> reviews;
@@ -83,12 +85,11 @@ public class UserProfileFragment extends Fragment {
         document = FirebaseFirestore.getInstance().collection("users").document(userID);
         DocumentReference reference = firebaseFirestore.collection("users").document(userID);
 
-        btnDelete = view.findViewById(R.id.btnDelete);
+        btnChangePassword = view.findViewById(R.id.btnChangePassword);
         btnSave = view.findViewById(R.id.btnSave);
 
-        btnDelete.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().getCurrentUser().delete();
-
+        btnChangePassword.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), ForgotPassword.class));
         });
 
         image.setOnClickListener(v -> {

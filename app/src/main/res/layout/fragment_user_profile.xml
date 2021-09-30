@@ -33,23 +33,23 @@
                 <Button
                     android:id="@+id/btnSave"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="fill_vertical"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="1"
-                    android:text="Spasi promjene"
-                    android:textSize="14sp" />
-
-                <Button
-                    android:id="@+id/btnDelete"
-                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="fill_vertical"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
-                    android:text="Obriši profil"
+                    android:text="@string/spasi_promjene"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btnChangePassword"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/promijeni_lozinku"
                     android:textSize="14sp" />
 
 
@@ -112,6 +112,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:ems="10"
+                android:background="@android:color/transparent"
                 android:gravity="start|top"
                 android:hint="Dodaj opis profila"
                 android:inputType="textMultiLine"

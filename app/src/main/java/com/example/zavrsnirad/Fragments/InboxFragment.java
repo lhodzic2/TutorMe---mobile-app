@@ -3,7 +3,6 @@ package com.example.zavrsnirad.Fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,14 +24,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class InboxFragment extends Fragment {
@@ -67,8 +64,8 @@ public class InboxFragment extends Fragment {
 
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         messages = new ArrayList<>();
-        db = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference("MessageList").child(userID);
 
+        db = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference("MessageList").child(userID);
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -78,7 +75,7 @@ public class InboxFragment extends Fragment {
                     MessageList messageList = ds.getValue(MessageList.class);
                     messages.add(messageList);
                 }
-                getAllMessages();
+                getChats();
             }
 
             @Override
@@ -89,29 +86,25 @@ public class InboxFragment extends Fragment {
         return view;
     }
 
-    private void getAllMessages() {
+    private void getChats() {
         users = new ArrayList<>();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        //TODO:add value event
-        firebaseFirestore.collection("users").addSnapshotListener(new EventListener<QuerySnapshot>() { //TODO:popraviti ovaj event listener
-            @Override
-            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
-                users.clear();
+        firebaseFirestore.collection("users").addSnapshotListener((value, error) -> {
+            users.clear();
 
-                for (DocumentChange documentChange : value.getDocumentChanges()) {
-                    User user = documentChange.getDocument().toObject(User.class);
+            for (DocumentChange documentChange : value.getDocumentChanges()) {
+                User user = documentChange.getDocument().toObject(User.class);
 
-                    for (MessageList msg : messages) {
-                        if (user.getId().equals(msg.getId())) {
-                            users.add(user);
-                        }
+                for (MessageList msg : messages) {
+                    if (user.getId().equals(msg.getId())) {
+                        users.add(user);
                     }
                 }
-
-                adapter = new UserMessageAdapter(getContext(),users);
-                recycler.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
             }
+            Collections.reverse(users);
+            adapter = new UserMessageAdapter(getContext(),users);
+            recycler.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         });
         progressInbox.setVisibility(View.INVISIBLE);
     }

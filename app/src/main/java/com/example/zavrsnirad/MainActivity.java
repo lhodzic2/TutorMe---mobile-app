@@ -19,7 +19,7 @@ import com.example.zavrsnirad.Fragments.UserProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Dashboard extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
 
     @Override
@@ -31,7 +31,6 @@ public class Dashboard extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host);
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(navigationView,navController);
-
     }
 
     //Log out

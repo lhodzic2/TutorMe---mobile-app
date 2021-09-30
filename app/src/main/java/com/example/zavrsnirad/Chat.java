@@ -78,7 +78,7 @@ public class Chat extends AppCompatActivity {
         document.addSnapshotListener((value, error) -> {
             User user = value.toObject(User.class);
             userName.setText(user.getFullName());
-            readMessage(senderID.trim(), recieverID.trim());
+            readMessages(senderID.trim(), recieverID.trim());
             if (user.getImageURI().equals("default")) {
                 imageView.setImageResource(R.mipmap.ikona3);
             } else {
@@ -110,8 +110,7 @@ public class Chat extends AppCompatActivity {
         hashMap.put("receiverID", recieverID.trim());
         hashMap.put("message", message);
         db.child("messages").push().setValue(hashMap);
-        //TODO: dodati error kad poruka nije poslana
-        //TODO: provjeriti da li je listener najbolja opcija
+
         DatabaseReference dbChat = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference("MessageList")
                 .child(senderID).child(recieverID);
         dbChat.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -145,7 +144,7 @@ public class Chat extends AppCompatActivity {
 
     }
 
-    private void readMessage(String senderID, String receiverID) {
+    private void readMessages(String senderID, String receiverID) {
         messages = new ArrayList<>();
         db = FirebaseDatabase.getInstance("https://zavrsni-rad-200d4-default-rtdb.europe-west1.firebasedatabase.app/").getReference("messages");
         db.addValueEventListener(new ValueEventListener() {
@@ -169,8 +168,6 @@ public class Chat extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 

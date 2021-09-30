@@ -41,8 +41,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         this.usersOriginal = new ArrayList<>(users);
     }
 
-
-
     @NonNull
     @NotNull
     @Override
@@ -63,7 +61,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
         else holder.rating.setText("");
 
         holder.itemView.setOnClickListener(v -> {
-           /// Intent intent = new Intent(context, Chat.class);
             Intent intent = new Intent(context, ProfilePreview.class);
             intent.putExtra("id",user.getId());
             context.startActivity(intent);
@@ -112,7 +109,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
             } else {
                 String filter = constraint.toString().toLowerCase().trim();
                 for (User u : usersOriginal) {
-                    if (u.getFullName().toLowerCase().contains(filter) || arrayToString(u.getPredmeti()).toLowerCase().contains(filter)) {
+                    if (u.getFullName().toLowerCase().contains(filter) || getSubjectList(u.getPredmeti()).toLowerCase().contains(filter)) {
                         filteredUsers.add(u);
                     }
                 }
@@ -149,6 +146,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> im
             if (subjects.size() >= 2) {
                 arrayString = arrayString + ", " + subjects.get(1) + ", ...";
             }
+        return arrayString;
+    }
+
+    private String getSubjectList (ArrayList<String> subjects) {
+        String arrayString = subjects.get(0);
+        for (int i = 1; i<subjects.size(); i++) {
+            arrayString = arrayString + ", " + subjects.get(i);
+        }
         return arrayString;
     }
 }

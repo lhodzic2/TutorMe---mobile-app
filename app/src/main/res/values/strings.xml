@@ -32,4 +32,7 @@
     <string name="unesite_va_e_mi_ljenje">Unesite vaše mišljenje</string>
     <string name="po_alji">Pošalji</string>
     <string name="ocjena">Ocjena:</string>
+    <string name="search">Pretraga</string>
+    <string name="promijeni_lozinku">Promijeni lozinku</string>
+    <string name="spasi_promjene">Spasi promjene</string>
 </resources>

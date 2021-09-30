@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -87,7 +86,7 @@ public class Register extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), Dashboard.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
     }
